@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Team Friendship Challenge</title>
+    <title>Team Friendship Jacksonville - Fundraising Challenge</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -1035,7 +1035,7 @@
     <div class="auth-screen" id="auth-screen">
         <div class="auth-logo">🏃‍♂️</div>
         <h1 class="auth-title">Team Friendship</h1>
-        <p class="auth-subtitle">Fundraising Challenge</p>
+        <p class="auth-subtitle">Jacksonville Fundraising Challenge</p>
 
         <div class="auth-box">
             <div class="auth-tabs">
@@ -1088,7 +1088,7 @@
     <div class="app-container" id="app-container">
         <!-- Header -->
         <header class="app-header">
-            <div class="header-logo">Team Friendship</div>
+            <div class="header-logo">TF Jacksonville</div>
             <div class="header-user">
                 <div class="user-points" id="header-points">0 pts</div>
                 <div class="user-avatar" id="header-avatar" onclick="showView('profile')">?</div>
@@ -1103,13 +1103,24 @@
                 <div class="streak-fire" id="dash-fire"></div>
             </div>
 
+            <div class="stats-grid" style="margin-bottom:15px">
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(255,100,100,0.2), rgba(255,150,100,0.2));">
+                    <div class="stat-value" id="deadline-countdown" style="color:#ff6b6b">--</div>
+                    <div class="stat-label">Days to Deadline (Jan 21)</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(78,205,196,0.2), rgba(68,160,141,0.2));">
+                    <div class="stat-value" id="event-countdown">--</div>
+                    <div class="stat-label">Days to Event (Jan 30)</div>
+                </div>
+            </div>
+
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="dash-points">0</div>
                     <div class="stat-label">Total Points</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="dash-tasks">0/25</div>
+                    <div class="stat-value" id="dash-tasks">0/23</div>
                     <div class="stat-label">Tasks Done</div>
                 </div>
                 <div class="stat-card">
@@ -1277,44 +1288,42 @@
         // TASK DATA
         // ============================================
         const tasks = [
-            // Week 1: Setup
-            { id: "1-1", week: 1, title: "Set your fundraising goal", desc: "Pick a specific, challenging but achievable number", points: 10 },
-            { id: "1-2", week: 1, title: "Build your prospect list", desc: "List 50+ people from all categories", points: 20 },
-            { id: "1-3", week: 1, title: "Set up fundraising page", desc: "Add a great photo and compelling description", points: 10 },
-            { id: "1-4", week: 1, title: "Announce on social media", desc: "Share that you've joined Team Friendship!", points: 10 },
-            { id: "1-5", week: 1, title: "Divide list into weekly groups", desc: "Organize contacts into manageable weekly batches", points: 10 },
-            // Week 2: Inner Circle
-            { id: "2-1", week: 2, title: "Contact immediate family", desc: "Parents, siblings, grandparents", points: 15 },
-            { id: "2-2", week: 2, title: "Reach out to close friends", desc: "Your 5-10 closest friends", points: 15 },
-            { id: "2-3", week: 2, title: "Send personal messages", desc: "Use WhatsApp, text, or call - not mass emails", points: 15 },
-            { id: "2-4", week: 2, title: "Follow up with non-responders", desc: "Thursday follow-up to anyone who hasn't responded", points: 10 },
-            { id: "2-5", week: 2, title: "Post training update", desc: "Share your journey on social media", points: 5 },
-            // Week 3: Expand
-            { id: "3-1", week: 3, title: "Contact extended family", desc: "Aunts, uncles, cousins, in-laws", points: 15 },
-            { id: "3-2", week: 3, title: "Reach out to work contacts", desc: "Colleagues, boss, clients", points: 15 },
-            { id: "3-3", week: 3, title: "Ask about corporate matching", desc: "Check if employers match charitable donations", points: 20 },
-            { id: "3-4", week: 3, title: "Share milestone update", desc: "Post your progress toward your goal", points: 5 },
-            { id: "3-5", week: 3, title: "Second round of follow-ups", desc: "Follow up with week 2 non-responders", points: 10 },
-            // Week 4: Push & Services
-            { id: "4-1", week: 4, title: "Contact service providers", desc: "Doctor, dentist, accountant, local businesses", points: 15 },
-            { id: "4-2", week: 4, title: "Reach out to community", desc: "Shul members, neighbors, PTA", points: 15 },
-            { id: "4-3", week: 4, title: "Share an impact story", desc: "Post about a Friendship Circle story", points: 10 },
-            { id: "4-4", week: 4, title: "Ask donors to share", desc: "Request supporters share your page", points: 10 },
-            { id: "4-5", week: 4, title: "Final follow-up round", desc: "Last chance outreach to all non-responders", points: 10 },
-            // Week 5: Final Sprint
-            { id: "5-1", week: 5, title: "Post countdown content", desc: '"X days until the event!" posts', points: 10 },
-            { id: "5-2", week: 5, title: 'Send "last chance" message', desc: "Final ask with urgency", points: 15 },
-            { id: "5-3", week: 5, title: "Event day posts", desc: "Share photos from the event", points: 10 },
-            { id: "5-4", week: 5, title: "Thank every donor", desc: "Personal thank you messages to all supporters", points: 20 },
-            { id: "5-5", week: 5, title: "Share final results", desc: "Post your total raised and thank everyone!", points: 15 },
+            // Phase 1: Setup (Jan 13-14)
+            { id: "1-1", week: 1, title: "Set your fundraising goal", desc: "Aim high! What's your target?", points: 10 },
+            { id: "1-2", week: 1, title: "Build your prospect list", desc: "List 50+ people - family, friends, work, community", points: 20 },
+            { id: "1-3", week: 1, title: "Update your fundraising page", desc: "Add a great photo and personal story", points: 10 },
+            { id: "1-4", week: 1, title: "Announce on social media", desc: "Post that you're running for Friendship Circle Jacksonville!", points: 15 },
+            // Phase 2: Inner Circle (Jan 15-16)
+            { id: "2-1", week: 2, title: "Message immediate family", desc: "Parents, siblings, grandparents - they want to support you!", points: 15 },
+            { id: "2-2", week: 2, title: "Text your closest friends", desc: "Send personal messages to your top 10 friends", points: 15 },
+            { id: "2-3", week: 2, title: "Call 3 people today", desc: "Phone calls are more effective than texts!", points: 20 },
+            { id: "2-4", week: 2, title: "Post a training/prep update", desc: "Share your excitement for the Jan 30 event!", points: 10 },
+            // Phase 3: Expand Network (Jan 17-18)
+            { id: "3-1", week: 3, title: "Contact extended family", desc: "Aunts, uncles, cousins - everyone counts!", points: 15 },
+            { id: "3-2", week: 3, title: "Reach out to work contacts", desc: "Colleagues, boss, clients, vendors", points: 15 },
+            { id: "3-3", week: 3, title: "Ask about corporate matching", desc: "Many employers double donations!", points: 25 },
+            { id: "3-4", week: 3, title: "Contact community members", desc: "Shul, neighbors, school contacts", points: 15 },
+            { id: "3-5", week: 3, title: "Follow up with non-responders", desc: "Gentle reminder to those who haven't replied", points: 10 },
+            // Phase 4: Final Push (Jan 19-21) - DEADLINE JAN 21!
+            { id: "4-1", week: 4, title: "Post '3 days left!' update", desc: "Create urgency - fundraising ends Jan 21!", points: 15 },
+            { id: "4-2", week: 4, title: "Send final ask messages", desc: "Last chance outreach to everyone on your list", points: 20 },
+            { id: "4-3", week: 4, title: "Share an impact story", desc: "Post about what Friendship Circle does for kids", points: 15 },
+            { id: "4-4", week: 4, title: "Ask donors to share your page", desc: "Their networks can help you reach your goal!", points: 15 },
+            { id: "4-5", week: 4, title: "Thank your donors so far", desc: "Gratitude posts encourage more giving", points: 10 },
+            // Phase 5: Event Week (Jan 22-30)
+            { id: "5-1", week: 5, title: "Post event countdown", desc: "Build excitement for Jan 30!", points: 10 },
+            { id: "5-2", week: 5, title: "Share your final fundraising total", desc: "Celebrate what you raised!", points: 15 },
+            { id: "5-3", week: 5, title: "Event day posts", desc: "Share photos and videos from the event!", points: 20 },
+            { id: "5-4", week: 5, title: "Thank every donor personally", desc: "Send individual thank you messages", points: 25 },
+            { id: "5-5", week: 5, title: "Share your event experience", desc: "Post your favorite moment from the day", points: 15 },
         ];
 
         const weekNames = {
-            1: "Week 1: Setup",
-            2: "Week 2: Inner Circle",
-            3: "Week 3: Expand",
-            4: "Week 4: Push & Services",
-            5: "Week 5: Final Sprint"
+            1: "Jan 13-14: Setup",
+            2: "Jan 15-16: Inner Circle",
+            3: "Jan 17-18: Expand Network",
+            4: "Jan 19-21: Final Push (Deadline!)",
+            5: "Jan 22-30: Event Week"
         };
 
         // ============================================
@@ -1550,7 +1559,7 @@
             // Dashboard
             document.getElementById('dash-streak').textContent = userData.streak || 0;
             document.getElementById('dash-points').textContent = userData.points || 0;
-            document.getElementById('dash-tasks').textContent = completedCount + '/25';
+            document.getElementById('dash-tasks').textContent = completedCount + '/23';
             document.getElementById('dash-proofs').textContent = proofsCount;
 
             // Streak fire
@@ -1560,6 +1569,15 @@
             else if (streak >= 3) fire = '🔥🔥';
             else if (streak >= 1) fire = '🔥';
             document.getElementById('dash-fire').textContent = fire;
+
+            // Countdowns
+            const today = new Date();
+            const deadline = new Date('2026-01-21');
+            const eventDay = new Date('2026-01-30');
+            const deadlineDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+            const eventDays = Math.ceil((eventDay - today) / (1000 * 60 * 60 * 24));
+            document.getElementById('deadline-countdown').textContent = deadlineDays > 0 ? deadlineDays : (deadlineDays === 0 ? 'TODAY!' : 'PASSED');
+            document.getElementById('event-countdown').textContent = eventDays > 0 ? eventDays : (eventDays === 0 ? 'TODAY!' : 'PASSED');
 
             // Profile
             document.getElementById('profile-avatar').textContent = initial;
