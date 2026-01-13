@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Team Friendship Fundraising Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+        }
+
+        .nav-tab:not(.active) {
+            background: rgba(255,255,255,0.1);
+            color: #aaa;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* View containers */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Story Container */
+        .story-container {
+            max-width: 420px;
+            margin: 0 auto;
+            position: relative;
+            height: calc(100vh - 80px);
+            background: #000;
+            overflow: hidden;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar.completed {
+            background: #4ecdc4;
+        }
+
+        .progress-bar.current .progress-fill {
+            animation: progress 8s linear forwards;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4ecdc4;
+            width: 0;
+        }
+
+        @keyframes progress {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* Story Slide */
+        .story-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 24px 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .story-slide.active {
+            display: flex;
+        }
+
+        /* Story backgrounds */
+        .story-slide.gradient-1 { background: linear-gradient(135deg, #1a365d 0%, #2d5a87 50%, #4ecdc4 100%); }
+        .story-slide.gradient-2 { background: linear-gradient(135deg, #2d3436 0%, #000000 100%); }
+        .story-slide.gradient-3 { background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); }
+        .story-slide.gradient-4 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .story-slide.gradient-5 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .story-slide.gradient-6 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .story-slide.gradient-7 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .story-slide.gradient-8 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+        .story-number {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .story-title {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .story-content {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.95;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .story-emoji {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .story-list {
+            text-align: left;
+            max-width: 300px;
+            margin: 20px auto 0;
+        }
+
+        .story-list li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+            list-style: none;
+            position: relative;
+        }
+
+        .story-list li::before {
+            content: ">";
+            position: absolute;
+            left: -15px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .story-tip {
+            background: rgba(255,255,255,0.15);
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+
+        .story-tip strong {
+            color: #4ecdc4;
+        }
+
+        /* Navigation Areas */
+        .nav-area {
+            position: absolute;
+            top: 60px;
+            bottom: 80px;
+            width: 30%;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .nav-area.prev { left: 0; }
+        .nav-area.next { right: 0; }
+
+        /* Module Navigation */
+        .module-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 20px;
+        }
+
+        .module-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .module-dot.active {
+            background: #4ecdc4;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* Checklist View */
+        .checklist-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .streak-header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .streak-count {
+            font-size: 72px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .streak-label {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .streak-fire {
+            font-size: 48px;
+            margin-top: 10px;
+        }
+
+        .week-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .week-title {
+            color: #4ecdc4;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .week-progress {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .checklist-item.completed {
+            opacity: 0.6;
+        }
+
+        .checkbox {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #4ecdc4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.completed .checkbox {
+            background: #4ecdc4;
+        }
+
+        .checkbox svg {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+            stroke-width: 3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .checklist-item.completed .checkbox svg {
+            opacity: 1;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .checklist-item.completed .item-title {
+            text-decoration: line-through;
+        }
+
+        .item-desc {
+            color: #888;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .item-points {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,100,100,0.2);
+            border: none;
+            border-radius: 12px;
+            color: #ff6b6b;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255,100,100,0.3);
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .story-slide.active .story-title,
+        .story-slide.active .story-content,
+        .story-slide.active .story-emoji,
+        .story-slide.active .story-list,
+        .story-slide.active .story-tip {
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .story-slide.active .story-content { animation-delay: 0.1s; }
+        .story-slide.active .story-list { animation-delay: 0.2s; }
+        .story-slide.active .story-tip { animation-delay: 0.3s; }
+
+        /* Mobile optimization */
+        @media (max-width: 480px) {
+            .story-title {
+                font-size: 24px;
+            }
+            .story-content {
+                font-size: 14px;
+            }
+            .nav-tabs {
+                padding: 15px 10px;
+            }
+            .nav-tab {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-tabs">
+        <button class="nav-tab active" onclick="showView('stories')">Course</button>
+        <button class="nav-tab" onclick="showView('checklist')">Checklist</button>
+    </nav>
+
+    <!-- Stories View -->
+    <div id="stories-view" class="view active">
+        <div class="story-container">
+            <div class="progress-container" id="progress-container"></div>
+
+            <!-- Module 1: Mindset -->
+            <div class="story-slide gradient-1 active" data-module="1">
+                <div class="story-emoji">🧠</div>
+                <div class="story-number">Module 1</div>
+                <div class="story-title">Get Your Head in the Game</div>
+                <div class="story-content">
+                    Before you send a single message, let's work on your mindset. This changes everything.
+                </div>
+            </div>
+
+            <div class="story-slide gradient-1" data-module="1">
+                <div class="story-emoji">💡</div>
+                <div class="story-title">Reframe the Ask</div>
+                <div class="story-content">
+                    You're NOT begging for money.
+                </div>
+                <div class="story-tip">
+                    You're <strong>offering people an opportunity</strong> to be part of something meaningful.
+                </div>
+            </div>
+
+            <div class="story-slide gradient-1" data-module="1">
+                <div class="story-emoji">👶</div>
+                <div class="story-title">Remember Why</div>
+                <div class="story-content">
+                    Every dollar creates real friendships for real kids. When it feels hard, picture a child's face lighting up.
+                </div>
+                <div class="story-tip">
+                    <strong>That's what you're funding.</strong>
+                </div>
+            </div>
+
+            <div class="story-slide gradient-1" data-module="1">
+                <div class="story-title">Your 3 Mantras</div>
+                <div class="story-list">
+                    <li>"I'm not asking for myself - I'm asking for Friendship Circle."</li>
+                    <li>"People want to give - I'm just showing them where."</li>
+                    <li>"The worst they can say is no. And that's okay."</li>
+                </div>
+            </div>
+
+            <!-- Module 2: Build Your List -->
+            <div class="story-slide gradient-4" data-module="2">
+                <div class="story-emoji">📋</div>
+                <div class="story-number">Module 2</div>
+                <div class="story-title">Build Your Network</div>
+                <div class="story-content">
+                    The broader your list, the more successful you'll be. Let's build it right.
+                </div>
+            </div>
+
+            <div class="story-slide gradient-4" data-module="2">
+                <div class="story-title">Inner Circle</div>
+                <div class="story-content">
+                    These are your most likely donors:
+                </div>
+                <div class="story-list">
+                    <li>Immediate family</li>
+                    <li>Close friends</li>
+                    <li>People who owe you favors</li>
+                </div>
+                <div class="story-tip">
+                    Expected response rate: <strong>60-80%</strong>
+                </div>
+            </div>
+
+            <div class="story-slide gradient-4" data-module="2">
+                <div class="story-title">Warm Contacts</div>
+                <div class="story-content">
+                    People who know you well:
+                </div>
+                <div class="story-list">
+                    <li>Extended family</li>
+                    <li>Work colleagues</li>
+                    <li>Neighbors</li>
+                    <li>Parents of your kids' friends</li>
+                </div>
+                <div class="story-tip">
+                    Expected response rate: <strong>30-50%</strong>
+                </div>
+            </div>
+
+            <div class="story-slide gradient-4" data-module="2">
+                <div class="story-title">Don't Forget...</div>
+                <div class="story-list">
+                    <li>Your doctor, dentist, accountant</li>
+                    <li>Local businesses you frequent</li>
+                    <li>Your gym, hair salon</li>
+                    <li>Rabbi, shul members</li>
+                    <li>Recent event vendors</li>
+                </div>
+                <div class="story-tip">
+                    <strong>Everyone has a network bigger than they think!</strong>
+                </div>
+            </div>
+
+            <!-- Module 3: The Ask -->
+            <div class="story-slide gradient-5" data-module="3">
+                <div class="story-emoji">🎯</div>
+                <div class="story-number">Module 3</div>
+                <div class="story-title">The Perfect Ask</div>
+                <div class="story-content">
+                    There's an art to asking. Let's break it down.
+                </div>
+            </div>
+
+            <div class="story-slide gradient-5" data-module="3">
+                <div class="story-title">6 Parts of a Good Ask</div>
+                <div class="story-list">
+                    <li><strong>Personal connection</strong> - "I thought of you because..."</li>
+                    <li><strong>Your why</strong> - Why YOU are doing this</li>
+                    <li><strong>The cause</strong> - Brief explanation</li>
+                </div>
+            </div>
+
+            <div class="story-slide gradient-5" data-module="3">
+                <div class="story-title">6 Parts (continued)</div>
+                <div class="story-list">
+                    <li><strong>Specific ask</strong> - "Would you consider $50?"</li>
+                    <li><strong>Make it easy</strong> - Include the link!</li>
+                    <li><strong>Gracious out</strong> - "I understand if it's not the right time."</li>
+                </div>
+            </div>
+
+            <div class="story-slide gradient-5" data-module="3">
+                <div class="story-emoji">📱</div>
+                <div class="story-title">Best Methods</div>
+                <div class="story-content">
+                    In order of effectiveness:
+                </div>
+                <div class="story-list">
+                    <li><strong>In person</strong> - Most effective!</li>
+                    <li><strong>Phone call</strong> - Second best</li>
+                    <li><strong>Personal text/WhatsApp</strong></li>
+                    <li><strong>Email</strong> - Most common</li>
+                    <li><strong>Social media</strong> - Widest reach</li>
+                </div>
+            </div>
+
+            <!-- Module 4: Weekly System -->
+            <div class="story-slide gradient-6" data-module="4">
+                <div class="story-emoji">📅</div>
+                <div class="story-number">Module 4</div>
+                <div class="story-title">The Weekly System</div>
+                <div class="story-content">
+                    Stay organized with this proven weekly routine.
+                </div>
+            </div>
+
+            <div class="story-slide gradient-6" data-module="4">
+                <div class="story-emoji">☀️</div>
+                <div class="story-title">Sundays: Outreach Day</div>
+                <div class="story-content">
+                    People are relaxed and available. Use Sunday mornings to reach out to that week's group of contacts.
+                </div>
+                <div class="story-tip">
+                    <strong>Pro tip:</strong> Schedule your week's outreach in the morning!
+                </div>
+            </div>
+
+            <div class="story-slide gradient-6" data-module="4">
+                <div class="story-emoji">📞</div>
+                <div class="story-title">Thursdays: Follow-Up Day</div>
+                <div class="story-content">
+                    Follow up with donors who pledged or who didn't respond yet.
+                </div>
+                <div class="story-tip">
+                    <strong>Many donations come from follow-ups!</strong> Don't skip this step.
+                </div>
+            </div>
+
+            <div class="story-slide gradient-6" data-module="4">
+                <div class="story-emoji">🎉</div>
+                <div class="story-title">Fridays: Celebrate!</div>
+                <div class="story-content">
+                    You worked hard all week. Celebrate your progress, no matter how small.
+                </div>
+                <div class="story-tip">
+                    Every call, text, and email brings you closer to the goal!
+                </div>
+            </div>
+
+            <!-- Module 5: Social Media -->
+            <div class="story-slide gradient-7" data-module="5">
+                <div class="story-emoji">📸</div>
+                <div class="story-number">Module 5</div>
+                <div class="story-title">Social Media Strategy</div>
+                <div class="story-content">
+                    Amplify your reach with smart social posting.
+                </div>
+            </div>
+
+            <div class="story-slide gradient-7" data-module="5">
+                <div class="story-title">Post Types to Mix</div>
+                <div class="story-list">
+                    <li><strong>Announcement</strong> - Share that you joined!</li>
+                    <li><strong>Training updates</strong> - Show your journey</li>
+                    <li><strong>Impact stories</strong> - Share FC stories</li>
+                    <li><strong>Direct asks</strong> - Be real and direct</li>
+                    <li><strong>Milestones</strong> - Celebrate progress!</li>
+                </div>
+            </div>
+
+            <div class="story-slide gradient-7" data-module="5">
+                <div class="story-title">Hashtag Guide</div>
+                <div class="story-content">Always use:</div>
+                <div class="story-list">
+                    <li>#TeamFriendship</li>
+                    <li>#FriendshipCircle</li>
+                    <li>#EveryChildDeservesAFriend</li>
+                </div>
+                <div class="story-tip">
+                    Post <strong>2-3x per week</strong> during your fundraising period!
+                </div>
+            </div>
+
+            <!-- Module 6: Overcoming Challenges -->
+            <div class="story-slide gradient-8" data-module="6">
+                <div class="story-emoji">💪</div>
+                <div class="story-number">Module 6</div>
+                <div class="story-title">When It Gets Hard</div>
+                <div class="story-content">
+                    Everyone hits obstacles. Here's how to push through.
+                </div>
+            </div>
+
+            <div class="story-slide gradient-8" data-module="6">
+                <div class="story-title">"I hate asking for money"</div>
+                <div class="story-content">
+                    Reframe it! You're offering an opportunity, not begging.
+                </div>
+                <div class="story-tip">
+                    Focus on the <strong>mission</strong>, not the money. Most people WANT to help!
+                </div>
+            </div>
+
+            <div class="story-slide gradient-8" data-module="6">
+                <div class="story-title">"People aren't responding"</div>
+                <div class="story-content">
+                    Follow up! People are busy. One message is NOT enough.
+                </div>
+                <div class="story-tip">
+                    Send <strong>2-3 follow-ups</strong> spaced a week apart. Many donations come from follow-ups!
+                </div>
+            </div>
+
+            <div class="story-slide gradient-8" data-module="6">
+                <div class="story-title">"Someone said no"</div>
+                <div class="story-content">
+                    That's okay! Thank them for considering it. Don't take it personally.
+                </div>
+                <div class="story-tip">
+                    <strong>Move on to the next person.</strong> Every "no" gets you closer to a "yes"!
+                </div>
+            </div>
+
+            <!-- Final Slide -->
+            <div class="story-slide gradient-3" data-module="7">
+                <div class="story-emoji">🏆</div>
+                <div class="story-title">You've Got This!</div>
+                <div class="story-content">
+                    Fundraising is a skill. Like any skill, it gets easier with practice.
+                </div>
+                <div class="story-tip">
+                    Every dollar you raise goes to a child who deserves a friend. <strong>Now go make friendship possible!</strong>
+                </div>
+            </div>
+
+            <!-- Navigation areas -->
+            <div class="nav-area prev" onclick="prevSlide()"></div>
+            <div class="nav-area next" onclick="nextSlide()"></div>
+
+            <!-- Module dots -->
+            <div class="module-nav" id="module-nav"></div>
+        </div>
+    </div>
+
+    <!-- Checklist View -->
+    <div id="checklist-view" class="view">
+        <div class="checklist-container">
+            <div class="streak-header">
+                <div class="streak-count" id="streak-count">0</div>
+                <div class="streak-label">Day Streak</div>
+                <div class="streak-fire" id="streak-fire"></div>
+            </div>
+
+            <!-- Week 1 -->
+            <div class="week-section">
+                <div class="week-header">
+                    <div class="week-title">Week 1: Setup</div>
+                    <div class="week-progress" id="week1-progress">0/5</div>
+                </div>
+
+                <div class="checklist-item" data-id="1-1" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Set your fundraising goal</div>
+                        <div class="item-desc">Pick a specific, challenging but achievable number</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+
+                <div class="checklist-item" data-id="1-2" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Build your prospect list</div>
+                        <div class="item-desc">List 50+ people from all categories (family, work, services, community)</div>
+                    </div>
+                    <div class="item-points">+20</div>
+                </div>
+
+                <div class="checklist-item" data-id="1-3" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Set up fundraising page</div>
+                        <div class="item-desc">Add a great photo and compelling description</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+
+                <div class="checklist-item" data-id="1-4" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Announce on social media</div>
+                        <div class="item-desc">Share that you've joined Team Friendship!</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+
+                <div class="checklist-item" data-id="1-5" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Divide list into weekly groups</div>
+                        <div class="item-desc">Organize contacts into manageable weekly batches</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+            </div>
+
+            <!-- Week 2 -->
+            <div class="week-section">
+                <div class="week-header">
+                    <div class="week-title">Week 2: Inner Circle</div>
+                    <div class="week-progress" id="week2-progress">0/5</div>
+                </div>
+
+                <div class="checklist-item" data-id="2-1" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Contact immediate family</div>
+                        <div class="item-desc">Parents, siblings, grandparents</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+
+                <div class="checklist-item" data-id="2-2" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Reach out to close friends</div>
+                        <div class="item-desc">Your 5-10 closest friends</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+
+                <div class="checklist-item" data-id="2-3" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Send personal messages</div>
+                        <div class="item-desc">Use WhatsApp, text, or call - not mass emails</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+
+                <div class="checklist-item" data-id="2-4" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Follow up with non-responders</div>
+                        <div class="item-desc">Thursday follow-up to anyone who hasn't responded</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+
+                <div class="checklist-item" data-id="2-5" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Post training update</div>
+                        <div class="item-desc">Share your journey on social media</div>
+                    </div>
+                    <div class="item-points">+5</div>
+                </div>
+            </div>
+
+            <!-- Week 3 -->
+            <div class="week-section">
+                <div class="week-header">
+                    <div class="week-title">Week 3: Expand</div>
+                    <div class="week-progress" id="week3-progress">0/5</div>
+                </div>
+
+                <div class="checklist-item" data-id="3-1" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Contact extended family</div>
+                        <div class="item-desc">Aunts, uncles, cousins, in-laws</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+
+                <div class="checklist-item" data-id="3-2" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Reach out to work contacts</div>
+                        <div class="item-desc">Colleagues, boss, clients</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+
+                <div class="checklist-item" data-id="3-3" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Ask about corporate matching</div>
+                        <div class="item-desc">Check if employers match charitable donations</div>
+                    </div>
+                    <div class="item-points">+20</div>
+                </div>
+
+                <div class="checklist-item" data-id="3-4" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Share milestone update</div>
+                        <div class="item-desc">Post your progress toward your goal</div>
+                    </div>
+                    <div class="item-points">+5</div>
+                </div>
+
+                <div class="checklist-item" data-id="3-5" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Second round of follow-ups</div>
+                        <div class="item-desc">Follow up with week 2 non-responders</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+            </div>
+
+            <!-- Week 4 -->
+            <div class="week-section">
+                <div class="week-header">
+                    <div class="week-title">Week 4: Push & Services</div>
+                    <div class="week-progress" id="week4-progress">0/5</div>
+                </div>
+
+                <div class="checklist-item" data-id="4-1" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Contact service providers</div>
+                        <div class="item-desc">Doctor, dentist, accountant, local businesses</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+
+                <div class="checklist-item" data-id="4-2" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Reach out to community</div>
+                        <div class="item-desc">Shul members, neighbors, PTA</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+
+                <div class="checklist-item" data-id="4-3" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Share an impact story</div>
+                        <div class="item-desc">Post about a Friendship Circle story</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+
+                <div class="checklist-item" data-id="4-4" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Ask donors to share</div>
+                        <div class="item-desc">Request supporters share your page with their networks</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+
+                <div class="checklist-item" data-id="4-5" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Final follow-up round</div>
+                        <div class="item-desc">Last chance outreach to all non-responders</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+            </div>
+
+            <!-- Week 5 -->
+            <div class="week-section">
+                <div class="week-header">
+                    <div class="week-title">Week 5: Final Sprint</div>
+                    <div class="week-progress" id="week5-progress">0/5</div>
+                </div>
+
+                <div class="checklist-item" data-id="5-1" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Post countdown content</div>
+                        <div class="item-desc">"X days until the event!" posts</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+
+                <div class="checklist-item" data-id="5-2" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Send "last chance" message</div>
+                        <div class="item-desc">Final ask with urgency</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+
+                <div class="checklist-item" data-id="5-3" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Event day posts</div>
+                        <div class="item-desc">Share photos from the event</div>
+                    </div>
+                    <div class="item-points">+10</div>
+                </div>
+
+                <div class="checklist-item" data-id="5-4" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Thank every donor</div>
+                        <div class="item-desc">Personal thank you messages to all supporters</div>
+                    </div>
+                    <div class="item-points">+20</div>
+                </div>
+
+                <div class="checklist-item" data-id="5-5" onclick="toggleItem(this)">
+                    <div class="checkbox">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Share final results</div>
+                        <div class="item-desc">Post your total raised and thank everyone!</div>
+                    </div>
+                    <div class="item-points">+15</div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetProgress()">Reset All Progress</button>
+        </div>
+    </div>
+
+    <script>
+        // Story state
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.story-slide');
+        const totalSlides = slides.length;
+
+        // Initialize progress bars
+        function initProgressBars() {
+            const container = document.getElementById('progress-container');
+            container.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'progress-bar';
+                bar.innerHTML = '<div class="progress-fill"></div>';
+                container.appendChild(bar);
+            }
+            updateProgress();
+        }
+
+        // Initialize module dots
+        function initModuleDots() {
+            const nav = document.getElementById('module-nav');
+            const modules = [...new Set([...slides].map(s => s.dataset.module))];
+            nav.innerHTML = '';
+            modules.forEach((mod, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'module-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => goToModule(mod);
+                nav.appendChild(dot);
+            });
+        }
+
+        function goToModule(moduleNum) {
+            const firstSlideIndex = [...slides].findIndex(s => s.dataset.module === moduleNum);
+            if (firstSlideIndex !== -1) {
+                currentSlide = firstSlideIndex;
+                showSlide(currentSlide);
+            }
+        }
+
+        function updateProgress() {
+            const bars = document.querySelectorAll('.progress-bar');
+            bars.forEach((bar, i) => {
+                bar.classList.remove('completed', 'current');
+                if (i < currentSlide) {
+                    bar.classList.add('completed');
+                } else if (i === currentSlide) {
+                    bar.classList.add('current');
+                }
+            });
+
+            // Update module dots
+            const currentModule = slides[currentSlide].dataset.module;
+            const modules = [...new Set([...slides].map(s => s.dataset.module))];
+            const dots = document.querySelectorAll('.module-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', modules[i] === currentModule);
+            });
+        }
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            updateProgress();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // View switching
+        function showView(view) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(view + '-view').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Checklist functionality
+        let completedItems = JSON.parse(localStorage.getItem('tf-checklist') || '[]');
+        let lastCheckDate = localStorage.getItem('tf-last-check');
+        let streak = parseInt(localStorage.getItem('tf-streak') || '0');
+
+        function initChecklist() {
+            // Restore completed items
+            completedItems.forEach(id => {
+                const item = document.querySelector(`[data-id="${id}"]`);
+                if (item) item.classList.add('completed');
+            });
+
+            // Check streak
+            checkStreak();
+            updateStreakDisplay();
+            updateWeekProgress();
+        }
+
+        function toggleItem(element) {
+            const id = element.dataset.id;
+            element.classList.toggle('completed');
+
+            if (element.classList.contains('completed')) {
+                if (!completedItems.includes(id)) {
+                    completedItems.push(id);
+                }
+            } else {
+                completedItems = completedItems.filter(i => i !== id);
+            }
+
+            localStorage.setItem('tf-checklist', JSON.stringify(completedItems));
+            updateWeekProgress();
+
+            // Update streak on any activity
+            const today = new Date().toDateString();
+            if (lastCheckDate !== today) {
+                if (isConsecutiveDay()) {
+                    streak++;
+                } else if (lastCheckDate) {
+                    streak = 1;
+                } else {
+                    streak = 1;
+                }
+                lastCheckDate = today;
+                localStorage.setItem('tf-last-check', today);
+                localStorage.setItem('tf-streak', streak.toString());
+                updateStreakDisplay();
+            }
+        }
+
+        function isConsecutiveDay() {
+            if (!lastCheckDate) return false;
+            const last = new Date(lastCheckDate);
+            const today = new Date();
+            const diffTime = today - last;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays === 1;
+        }
+
+        function checkStreak() {
+            if (!lastCheckDate) return;
+            const last = new Date(lastCheckDate);
+            const today = new Date();
+            const diffTime = today - last;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays > 1) {
+                streak = 0;
+                localStorage.setItem('tf-streak', '0');
+            }
+        }
+
+        function updateStreakDisplay() {
+            document.getElementById('streak-count').textContent = streak;
+            const fire = document.getElementById('streak-fire');
+            if (streak >= 7) {
+                fire.textContent = '🔥🔥🔥';
+            } else if (streak >= 3) {
+                fire.textContent = '🔥🔥';
+            } else if (streak >= 1) {
+                fire.textContent = '🔥';
+            } else {
+                fire.textContent = '';
+            }
+        }
+
+        function updateWeekProgress() {
+            for (let week = 1; week <= 5; week++) {
+                const weekItems = document.querySelectorAll(`[data-id^="${week}-"]`);
+                const completed = [...weekItems].filter(i => i.classList.contains('completed')).length;
+                const progressEl = document.getElementById(`week${week}-progress`);
+                if (progressEl) {
+                    progressEl.textContent = `${completed}/${weekItems.length}`;
+                }
+            }
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                localStorage.removeItem('tf-checklist');
+                localStorage.removeItem('tf-last-check');
+                localStorage.removeItem('tf-streak');
+                completedItems = [];
+                streak = 0;
+                lastCheckDate = null;
+                document.querySelectorAll('.checklist-item').forEach(i => i.classList.remove('completed'));
+                updateStreakDisplay();
+                updateWeekProgress();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('stories-view').classList.contains('active')) {
+                if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            }
+        });
+
+        // Touch swipe support
+        let touchStartX = 0;
+        document.querySelector('.story-container').addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        document.querySelector('.story-container').addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+        });
+
+        // Initialize
+        initProgressBars();
+        initModuleDots();
+        initChecklist();
+    </script>
+</body>
+</html>
