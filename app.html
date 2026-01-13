@@ -473,15 +473,18 @@
                     <span class="daily-timer" id="daily-timer">Ends in --:--</span>
                 </div>
                 <div class="daily-task" id="daily-task">Loading...</div>
-                <span class="daily-points" id="daily-points">+0 BONUS pts</span>
+                <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+                    <span class="daily-points" id="daily-points">+0 BONUS pts</span>
+                    <button id="daily-complete-btn" onclick="completeDailyChallenge()" style="padding:6px 14px; background:linear-gradient(135deg,#ffd700,#ff8c00); border:none; border-radius:8px; color:#000; font-family:'Poppins',sans-serif; font-weight:600; font-size:12px; cursor:pointer;">Complete</button>
+                </div>
             </div>
 
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="stat-card" onclick="showView('tasks')" style="cursor:pointer">
                     <div class="stat-value" id="dash-tasks">0</div>
                     <div class="stat-label">Tasks Done</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="showView('leaderboard')" style="cursor:pointer">
                     <div class="stat-value" id="dash-rank">#--</div>
                     <div class="stat-label">Leaderboard</div>
                 </div>
@@ -529,6 +532,11 @@
                 </div>
             </div>
             <div class="profile-section">
+                <div class="profile-option" onclick="editName()">
+                    <span class="profile-option-icon">✏️</span>
+                    <span class="profile-option-text">Edit Name</span>
+                    <span class="profile-option-arrow">›</span>
+                </div>
                 <div class="profile-option" onclick="window.location.href='index.html'">
                     <span class="profile-option-icon">📚</span>
                     <span class="profile-option-text">Fundraising Course</span>
@@ -890,7 +898,8 @@
 
             if (daily) {
                 document.getElementById('daily-task').textContent = daily.task;
-                document.getElementById('daily-points').textContent = '+' + daily.points + ' BONUS pts';
+                const displayPoints = Math.round(daily.points * (userData.multiplier || 1));
+                document.getElementById('daily-points').textContent = '+' + displayPoints + ' BONUS pts';
 
                 // Timer until midnight
                 const now = new Date();
@@ -900,6 +909,20 @@
                 const hours = Math.floor(diff / (1000 * 60 * 60));
                 const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 document.getElementById('daily-timer').textContent = `Ends in ${hours}h ${mins}m`;
+
+                // Check if already completed
+                const btn = document.getElementById('daily-complete-btn');
+                if (userData.dailyCompleted?.includes(today)) {
+                    btn.textContent = '✓ Done';
+                    btn.disabled = true;
+                    btn.style.background = 'rgba(100,255,150,0.3)';
+                    btn.style.color = '#64ff96';
+                } else {
+                    btn.textContent = 'Complete';
+                    btn.disabled = false;
+                    btn.style.background = 'linear-gradient(135deg,#ffd700,#ff8c00)';
+                    btn.style.color = '#000';
+                }
             } else {
                 document.getElementById('daily-challenge').style.display = 'none';
             }
@@ -1026,6 +1049,12 @@
             const task = tasks.find(t => t.id === taskId);
             if (!task) return;
 
+            // Check if already completed
+            if (userData.completedTasks?.includes(taskId)) {
+                showToast('Task already completed!', 'success');
+                return;
+            }
+
             currentTaskId = taskId;
             selectedFile = null;
 
@@ -1035,6 +1064,7 @@
             document.getElementById('upload-area').classList.remove('has-file');
             document.querySelector('#upload-area .upload-text').textContent = 'Tap to select image';
             document.getElementById('submit-proof-btn').disabled = true;
+            document.getElementById('submit-proof-btn').textContent = 'Submit';
             document.getElementById('file-input').value = '';
 
             document.getElementById('upload-modal').classList.add('show');
@@ -1061,6 +1091,15 @@
 
         async function submitProof() {
             if (!selectedFile || !currentTaskId) return;
+
+            // Check if already completed - prevent points farming
+            const alreadyCompleted = userData.completedTasks?.includes(currentTaskId);
+            if (alreadyCompleted) {
+                showToast('Task already completed!', 'error');
+                closeModal();
+                return;
+            }
+
             const btn = document.getElementById('submit-proof-btn');
             btn.disabled = true;
             btn.textContent = 'Uploading...';
@@ -1076,22 +1115,17 @@
                 const updates = {
                     [`proofs.${currentTaskId}`]: downloadUrl,
                     points: firebase.firestore.FieldValue.increment(points),
+                    completedTasks: firebase.firestore.FieldValue.arrayUnion(currentTaskId),
                     lastActive: firebase.firestore.FieldValue.serverTimestamp()
                 };
-
-                if (!userData.completedTasks?.includes(currentTaskId)) {
-                    updates.completedTasks = firebase.firestore.FieldValue.arrayUnion(currentTaskId);
-                }
 
                 await db.collection('users').doc(currentUser.uid).update(updates);
 
                 userData.proofs = userData.proofs || {};
                 userData.proofs[currentTaskId] = downloadUrl;
                 userData.points = (userData.points || 0) + points;
-                if (!userData.completedTasks?.includes(currentTaskId)) {
-                    userData.completedTasks = userData.completedTasks || [];
-                    userData.completedTasks.push(currentTaskId);
-                }
+                userData.completedTasks = userData.completedTasks || [];
+                userData.completedTasks.push(currentTaskId);
 
                 closeModal();
                 updateUI();
@@ -1101,9 +1135,9 @@
             } catch (error) {
                 console.error('Error:', error);
                 showToast('Upload failed', 'error');
-                btn.disabled = false;
-                btn.textContent = 'Submit';
             }
+            btn.disabled = false;
+            btn.textContent = 'Submit';
         }
 
         // LEADERBOARD
@@ -1176,6 +1210,62 @@
             } else {
                 navigator.clipboard.writeText(text + ' ' + window.location.href);
                 showToast('Link copied!', 'success');
+            }
+        }
+
+        async function editName() {
+            const newName = prompt('Enter your name:', userData.name || '');
+            if (newName && newName.trim()) {
+                try {
+                    await db.collection('users').doc(currentUser.uid).update({
+                        name: newName.trim()
+                    });
+                    userData.name = newName.trim();
+                    updateUI();
+                    showToast('Name updated!', 'success');
+                } catch (error) {
+                    showToast('Failed to update name', 'error');
+                }
+            }
+        }
+
+        async function completeDailyChallenge() {
+            const today = new Date().toISOString().split('T')[0];
+            const daily = dailyChallenges.find(d => d.date === today);
+            if (!daily) return;
+
+            // Check if already completed today
+            if (userData.dailyCompleted?.includes(today)) {
+                showToast('Already completed today!', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('daily-complete-btn');
+            btn.disabled = true;
+            btn.textContent = 'Completing...';
+
+            try {
+                const points = Math.round(daily.points * (userData.multiplier || 1));
+                await db.collection('users').doc(currentUser.uid).update({
+                    dailyCompleted: firebase.firestore.FieldValue.arrayUnion(today),
+                    points: firebase.firestore.FieldValue.increment(points),
+                    lastActive: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                userData.dailyCompleted = userData.dailyCompleted || [];
+                userData.dailyCompleted.push(today);
+                userData.points = (userData.points || 0) + points;
+
+                updateUI();
+                showToast(`+${points} daily bonus earned!`, 'success');
+                btn.textContent = '✓ Done';
+                btn.style.background = 'rgba(100,255,150,0.3)';
+                btn.style.color = '#64ff96';
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Failed to complete', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Complete';
             }
         }
     </script>
