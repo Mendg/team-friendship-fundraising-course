@@ -1346,11 +1346,27 @@
             }
 
             // Listen for auth state changes
-            auth.onAuthStateChanged(user => {
+            auth.onAuthStateChanged(async user => {
                 document.getElementById('loading-screen').classList.add('hidden');
 
                 if (user) {
                     currentUser = user;
+
+                    // Check if user document exists, if not create it
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (!userDoc.exists) {
+                        await db.collection('users').doc(user.uid).set({
+                            name: user.displayName || user.email.split('@')[0],
+                            email: user.email,
+                            points: 0,
+                            streak: 1,
+                            lastActive: firebase.firestore.FieldValue.serverTimestamp(),
+                            completedTasks: [],
+                            proofs: {},
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+
                     loadUserData();
                 } else {
                     currentUser = null;
@@ -1418,15 +1434,13 @@
             btn.textContent = 'Signing in...';
             hideAuthError();
 
-            try {
-                const cred = await auth.signInWithEmailAndPassword(email, password);
-                currentUser = cred.user;
-                await loadUserData();
-            } catch (error) {
-                showAuthError(error.message);
-                btn.disabled = false;
-                btn.textContent = 'Sign In';
-            }
+            // onAuthStateChanged will handle the rest
+            auth.signInWithEmailAndPassword(email, password)
+                .catch(error => {
+                    showAuthError(error.message);
+                    btn.disabled = false;
+                    btn.textContent = 'Sign In';
+                });
         }
 
         async function handleSignup(e) {
@@ -1442,36 +1456,17 @@
             btn.textContent = 'Creating account...';
             hideAuthError();
 
-            try {
-                btn.textContent = 'Creating account...';
-                const cred = await auth.createUserWithEmailAndPassword(email, password);
-
-                btn.textContent = 'Setting up profile...';
-                await cred.user.updateProfile({ displayName: name });
-
-                // Create user document
-                btn.textContent = 'Saving data...';
-                await db.collection('users').doc(cred.user.uid).set({
-                    name: name,
-                    email: email,
-                    points: 0,
-                    streak: 1,
-                    lastActive: firebase.firestore.FieldValue.serverTimestamp(),
-                    completedTasks: [],
-                    proofs: {},
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            // Create auth account - onAuthStateChanged will handle the rest
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(cred => {
+                    return cred.user.updateProfile({ displayName: name });
+                })
+                .catch(error => {
+                    console.error('Signup error:', error);
+                    showAuthError(error.message || 'Signup failed');
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
                 });
-
-                // Redirect to app
-                btn.textContent = 'Loading...';
-                currentUser = cred.user;
-                await loadUserData();
-            } catch (error) {
-                console.error('Signup error:', error);
-                showAuthError(error.message || 'Signup failed. Check console for details.');
-                btn.disabled = false;
-                btn.textContent = 'Create Account';
-            }
         }
 
         async function handleGoogleLogin() {
