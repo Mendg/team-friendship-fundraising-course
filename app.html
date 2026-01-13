@@ -1419,7 +1419,9 @@
             hideAuthError();
 
             try {
-                await auth.signInWithEmailAndPassword(email, password);
+                const cred = await auth.signInWithEmailAndPassword(email, password);
+                currentUser = cred.user;
+                await loadUserData();
             } catch (error) {
                 showAuthError(error.message);
                 btn.disabled = false;
@@ -1449,12 +1451,16 @@
                     name: name,
                     email: email,
                     points: 0,
-                    streak: 0,
+                    streak: 1,
                     lastActive: firebase.firestore.FieldValue.serverTimestamp(),
                     completedTasks: [],
                     proofs: {},
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
+
+                // Redirect to app
+                currentUser = cred.user;
+                await loadUserData();
             } catch (error) {
                 showAuthError(error.message);
                 btn.disabled = false;
