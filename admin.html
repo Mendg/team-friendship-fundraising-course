@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TF Jacksonville</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f0f1a;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-screen.hidden {
+            display: none;
+        }
+
+        .login-box {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-box h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #4ecdc4;
+        }
+
+        .login-box p {
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #4ecdc4;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .login-error {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #4ecdc4;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .btn-danger {
+            background: rgba(255,100,100,0.2);
+            color: #ff6b6b;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #4ecdc4;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Countdown Cards */
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .countdown-card {
+            background: linear-gradient(135deg, rgba(255,100,100,0.2), rgba(255,150,100,0.1));
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .countdown-card.event {
+            background: linear-gradient(135deg, rgba(78,205,196,0.2), rgba(68,160,141,0.1));
+        }
+
+        .countdown-value {
+            font-size: 48px;
+            font-weight: 700;
+        }
+
+        .countdown-card:first-child .countdown-value {
+            color: #ff6b6b;
+        }
+
+        .countdown-card.event .countdown-value {
+            color: #4ecdc4;
+        }
+
+        .countdown-label {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Table */
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-container {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        th {
+            background: rgba(0,0,0,0.2);
+            font-weight: 600;
+            color: #aaa;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .rank {
+            font-weight: 700;
+            color: #4ecdc4;
+            width: 50px;
+        }
+
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .points {
+            font-weight: 700;
+            color: #4ecdc4;
+            font-size: 18px;
+        }
+
+        .streak {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tasks-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            width: 100px;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+            border-radius: 4px;
+        }
+
+        .view-btn {
+            padding: 6px 12px;
+            background: rgba(78, 205, 196, 0.2);
+            border: none;
+            border-radius: 6px;
+            color: #4ecdc4;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .view-btn:hover {
+            background: rgba(78, 205, 196, 0.3);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .user-detail {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .user-detail .user-avatar {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+        }
+
+        .user-detail-info h3 {
+            font-size: 18px;
+        }
+
+        .user-detail-info p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .detail-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .detail-stat {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .detail-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4ecdc4;
+        }
+
+        .detail-stat-label {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .tasks-section h4 {
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .task-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .task-check.done {
+            background: #4ecdc4;
+        }
+
+        .task-check.pending {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .task-name {
+            flex: 1;
+            font-size: 13px;
+        }
+
+        .task-name.done {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        .proof-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(100, 255, 150, 0.2);
+            color: #64ff96;
+        }
+
+        .proofs-section {
+            margin-top: 25px;
+        }
+
+        .proofs-section h4 {
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+
+        .proofs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .proof-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .proof-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .proof-item-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            padding: 8px;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        /* Export Section */
+        .export-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .export-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .export-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .user-email {
+                display: none;
+            }
+
+            .progress-bar {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="login-screen">
+        <div class="login-box">
+            <h1>Admin Dashboard</h1>
+            <p>Team Friendship Jacksonville</p>
+            <div class="login-error" id="login-error">Incorrect password</div>
+            <input type="password" id="admin-password" placeholder="Enter admin password" onkeypress="if(event.key==='Enter')checkPassword()">
+            <button onclick="checkPassword()">Access Dashboard</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <h1>TF Jacksonville Admin</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="loadData()">Refresh</button>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Countdowns -->
+        <div class="countdown-grid">
+            <div class="countdown-card">
+                <div class="countdown-value" id="deadline-days">--</div>
+                <div class="countdown-label">Days to Fundraising Deadline (Jan 21)</div>
+            </div>
+            <div class="countdown-card event">
+                <div class="countdown-value" id="event-days">--</div>
+                <div class="countdown-label">Days to Event (Jan 30)</div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="total-runners">0</div>
+                <div class="stat-label">Total Runners</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-points">0</div>
+                <div class="stat-label">Total Points Earned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-tasks">0</div>
+                <div class="stat-label">Tasks Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-proofs">0</div>
+                <div class="stat-label">Proofs Uploaded</div>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <h2 class="section-title">Leaderboard</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Runner</th>
+                        <th>Points</th>
+                        <th>Streak</th>
+                        <th>Progress</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <tr><td colspan="6" class="loading">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Export -->
+        <div class="export-section">
+            <h3>Export Data</h3>
+            <div class="export-btns">
+                <button class="btn btn-primary" onclick="exportCSV()">Export CSV</button>
+                <button class="btn btn-secondary" onclick="exportJSON()">Export JSON</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div class="modal-overlay" id="user-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Runner Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modal-content">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase config (same as app.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBK5Y7oKleZLUnUFoOLaRB_cXNmvKEDRRY",
+            authDomain: "team-friendship.firebaseapp.com",
+            projectId: "team-friendship",
+            storageBucket: "team-friendship.firebasestorage.app",
+            messagingSenderId: "747924547341",
+            appId: "1:747924547341:web:57669d47e1f61d3a833244",
+            measurementId: "G-X4H4DY11HR"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Admin password - change this!
+        const ADMIN_PASSWORD = "tfjax2026";
+
+        // Task data (same as app.html)
+        const tasks = [
+            { id: "1-1", title: "Set your fundraising goal" },
+            { id: "1-2", title: "Build your prospect list" },
+            { id: "1-3", title: "Update your fundraising page" },
+            { id: "1-4", title: "Announce on social media" },
+            { id: "2-1", title: "Message immediate family" },
+            { id: "2-2", title: "Text your closest friends" },
+            { id: "2-3", title: "Call 3 people today" },
+            { id: "2-4", title: "Post a training/prep update" },
+            { id: "3-1", title: "Contact extended family" },
+            { id: "3-2", title: "Reach out to work contacts" },
+            { id: "3-3", title: "Ask about corporate matching" },
+            { id: "3-4", title: "Contact community members" },
+            { id: "3-5", title: "Follow up with non-responders" },
+            { id: "4-1", title: "Post '3 days left!' update" },
+            { id: "4-2", title: "Send final ask messages" },
+            { id: "4-3", title: "Share an impact story" },
+            { id: "4-4", title: "Ask donors to share your page" },
+            { id: "4-5", title: "Thank your donors so far" },
+            { id: "5-1", title: "Post event countdown" },
+            { id: "5-2", title: "Share your final fundraising total" },
+            { id: "5-3", title: "Event day posts" },
+            { id: "5-4", title: "Thank every donor personally" },
+            { id: "5-5", title: "Share your event experience" },
+        ];
+
+        let allUsers = [];
+
+        // Check password
+        function checkPassword() {
+            const password = document.getElementById('admin-password').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard').classList.add('active');
+                sessionStorage.setItem('admin-auth', 'true');
+                loadData();
+            } else {
+                document.getElementById('login-error').classList.add('show');
+            }
+        }
+
+        // Check if already logged in
+        if (sessionStorage.getItem('admin-auth') === 'true') {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('active');
+            loadData();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('admin-auth');
+            window.location.reload();
+        }
+
+        // Load data from Firebase
+        async function loadData() {
+            try {
+                // Update countdowns
+                updateCountdowns();
+
+                // Get all users
+                const snapshot = await db.collection('users').orderBy('points', 'desc').get();
+                allUsers = [];
+                snapshot.forEach(doc => {
+                    allUsers.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Update stats
+                updateStats();
+
+                // Update leaderboard
+                renderLeaderboard();
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('leaderboard-body').innerHTML =
+                    '<tr><td colspan="6" class="loading">Error loading data. Check console.</td></tr>';
+            }
+        }
+
+        function updateCountdowns() {
+            const today = new Date();
+            const deadline = new Date('2026-01-21');
+            const eventDay = new Date('2026-01-30');
+
+            const deadlineDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+            const eventDays = Math.ceil((eventDay - today) / (1000 * 60 * 60 * 24));
+
+            document.getElementById('deadline-days').textContent =
+                deadlineDays > 0 ? deadlineDays : (deadlineDays === 0 ? 'TODAY!' : 'PASSED');
+            document.getElementById('event-days').textContent =
+                eventDays > 0 ? eventDays : (eventDays === 0 ? 'TODAY!' : 'PASSED');
+        }
+
+        function updateStats() {
+            const totalRunners = allUsers.length;
+            const totalPoints = allUsers.reduce((sum, u) => sum + (u.points || 0), 0);
+            const totalTasks = allUsers.reduce((sum, u) => sum + (u.completedTasks?.length || 0), 0);
+            const totalProofs = allUsers.reduce((sum, u) => sum + Object.keys(u.proofs || {}).length, 0);
+
+            document.getElementById('total-runners').textContent = totalRunners;
+            document.getElementById('total-points').textContent = totalPoints;
+            document.getElementById('total-tasks').textContent = totalTasks;
+            document.getElementById('total-proofs').textContent = totalProofs;
+        }
+
+        function renderLeaderboard() {
+            const tbody = document.getElementById('leaderboard-body');
+
+            if (allUsers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="loading">No runners registered yet</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = allUsers.map((user, index) => {
+                const initial = (user.name || user.email || 'U')[0].toUpperCase();
+                const completedCount = user.completedTasks?.length || 0;
+                const progress = Math.round((completedCount / 23) * 100);
+                const rankClass = index < 3 ? `rank-${index + 1}` : '';
+
+                return `
+                    <tr>
+                        <td class="rank ${rankClass}">#${index + 1}</td>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">${initial}</div>
+                                <div>
+                                    <div class="user-name">${user.name || 'Runner'}</div>
+                                    <div class="user-email">${user.email || ''}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="points">${user.points || 0}</td>
+                        <td>
+                            <div class="streak">
+                                ${user.streak || 0} ${user.streak > 0 ? '🔥' : ''}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="tasks-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                                <span>${completedCount}/23</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="view-btn" onclick="viewUser('${user.id}')">View</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function viewUser(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+
+            const initial = (user.name || user.email || 'U')[0].toUpperCase();
+            const completedTasks = user.completedTasks || [];
+            const proofs = user.proofs || {};
+
+            const tasksHtml = tasks.map(task => {
+                const isDone = completedTasks.includes(task.id);
+                const hasProof = proofs[task.id];
+                return `
+                    <div class="task-item">
+                        <div class="task-check ${isDone ? 'done' : 'pending'}">
+                            ${isDone ? '✓' : ''}
+                        </div>
+                        <div class="task-name ${isDone ? 'done' : ''}">${task.title}</div>
+                        ${hasProof ? '<span class="proof-badge">Proof</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+
+            const proofsHtml = Object.entries(proofs).length > 0 ? `
+                <div class="proofs-section">
+                    <h4>Uploaded Proofs</h4>
+                    <div class="proofs-grid">
+                        ${Object.entries(proofs).map(([taskId, url]) => {
+                            const task = tasks.find(t => t.id === taskId);
+                            return `
+                                <div class="proof-item" onclick="window.open('${url}', '_blank')">
+                                    <img src="${url}" alt="Proof">
+                                    <div class="proof-item-label">${task?.title || taskId}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            ` : '';
+
+            document.getElementById('modal-content').innerHTML = `
+                <div class="user-detail">
+                    <div class="user-avatar">${initial}</div>
+                    <div class="user-detail-info">
+                        <h3>${user.name || 'Runner'}</h3>
+                        <p>${user.email || 'No email'}</p>
+                    </div>
+                </div>
+
+                <div class="detail-stats">
+                    <div class="detail-stat">
+                        <div class="detail-stat-value">${user.points || 0}</div>
+                        <div class="detail-stat-label">Points</div>
+                    </div>
+                    <div class="detail-stat">
+                        <div class="detail-stat-value">${user.streak || 0}</div>
+                        <div class="detail-stat-label">Day Streak</div>
+                    </div>
+                    <div class="detail-stat">
+                        <div class="detail-stat-value">${completedTasks.length}/23</div>
+                        <div class="detail-stat-label">Tasks</div>
+                    </div>
+                </div>
+
+                <div class="tasks-section">
+                    <h4>Task Progress</h4>
+                    ${tasksHtml}
+                </div>
+
+                ${proofsHtml}
+            `;
+
+            document.getElementById('user-modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('user-modal').classList.remove('show');
+        }
+
+        // Export functions
+        function exportCSV() {
+            const headers = ['Rank', 'Name', 'Email', 'Points', 'Streak', 'Tasks Completed', 'Proofs Uploaded'];
+            const rows = allUsers.map((user, index) => [
+                index + 1,
+                user.name || '',
+                user.email || '',
+                user.points || 0,
+                user.streak || 0,
+                user.completedTasks?.length || 0,
+                Object.keys(user.proofs || {}).length
+            ]);
+
+            const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
+            downloadFile(csv, 'tf-jacksonville-leaderboard.csv', 'text/csv');
+        }
+
+        function exportJSON() {
+            const data = allUsers.map((user, index) => ({
+                rank: index + 1,
+                name: user.name,
+                email: user.email,
+                points: user.points,
+                streak: user.streak,
+                completedTasks: user.completedTasks,
+                proofs: user.proofs
+            }));
+            downloadFile(JSON.stringify(data, null, 2), 'tf-jacksonville-data.json', 'application/json');
+        }
+
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Close modal on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
