@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Team Friendship Jacksonville - Fundraising Challenge</title>
+    <title>TF Jacksonville Challenge</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -19,1033 +14,389 @@
             color: white;
         }
 
-        /* Loading Screen */
         .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
+            display: flex; align-items: center; justify-content: center; z-index: 9999;
         }
-
-        .loading-screen.hidden {
-            display: none;
-        }
-
+        .loading-screen.hidden { display: none; }
         .loader {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             border: 4px solid rgba(78, 205, 196, 0.3);
-            border-top-color: #4ecdc4;
-            border-radius: 50%;
+            border-top-color: #4ecdc4; border-radius: 50%;
             animation: spin 1s linear infinite;
         }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Auth Screen */
         .auth-screen {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px;
         }
-
-        .auth-screen.hidden {
-            display: none;
-        }
-
-        .auth-logo {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
+        .auth-screen.hidden { display: none; }
+        .auth-logo { font-size: 48px; margin-bottom: 10px; }
         .auth-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 5px;
+            font-size: 24px; font-weight: 800; margin-bottom: 5px;
             background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .auth-subtitle {
-            color: #888;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
+        .auth-subtitle { color: #888; margin-bottom: 30px; text-align: center; }
         .auth-box {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
+            background: rgba(255,255,255,0.05); border-radius: 20px;
+            padding: 30px; width: 100%; max-width: 400px;
         }
-
         .auth-tabs {
-            display: flex;
-            margin-bottom: 25px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 12px;
-            padding: 4px;
+            display: flex; margin-bottom: 20px;
+            background: rgba(0,0,0,0.2); border-radius: 12px; padding: 4px;
         }
-
         .auth-tab {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: transparent;
-            color: #888;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: all 0.3s ease;
+            flex: 1; padding: 12px; border: none; background: transparent;
+            color: #888; font-family: 'Poppins', sans-serif; font-weight: 600;
+            font-size: 14px; cursor: pointer; border-radius: 10px;
         }
-
         .auth-tab.active {
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            color: white;
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); color: white;
         }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: #aaa;
-            margin-bottom: 8px;
-        }
-
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; color: #aaa; margin-bottom: 6px; }
         .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 15px;
-            transition: all 0.3s ease;
+            width: 100%; padding: 12px 14px;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; color: white; font-family: 'Poppins', sans-serif; font-size: 14px;
         }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #4ecdc4;
-            background: rgba(255,255,255,0.12);
-        }
-
-        .form-group input::placeholder {
-            color: #666;
-        }
-
+        .form-group input:focus { outline: none; border-color: #4ecdc4; }
         .auth-btn {
-            width: 100%;
-            padding: 16px;
+            width: 100%; padding: 14px;
             background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 15px;
+            border: none; border-radius: 12px; color: white;
+            font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer;
         }
-
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
-        }
-
-        .auth-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .auth-divider {
-            text-align: center;
-            color: #666;
-            margin: 20px 0;
-            position: relative;
-        }
-
-        .auth-divider::before,
-        .auth-divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40%;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .auth-divider::before { left: 0; }
-        .auth-divider::after { right: 0; }
-
+        .auth-btn:disabled { opacity: 0.6; }
+        .auth-divider { text-align: center; color: #666; margin: 20px 0; }
         .google-btn {
-            width: 100%;
-            padding: 14px;
-            background: white;
-            border: none;
-            border-radius: 12px;
-            color: #333;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            font-size: 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s ease;
+            width: 100%; padding: 12px; background: white; border: none;
+            border-radius: 12px; color: #333; font-family: 'Poppins', sans-serif;
+            font-weight: 500; font-size: 14px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-
-        .google-btn:hover {
-            background: #f5f5f5;
-        }
-
-        .google-btn svg {
-            width: 20px;
-            height: 20px;
-        }
-
+        .google-btn svg { width: 20px; height: 20px; }
         .auth-error {
-            background: rgba(255, 100, 100, 0.2);
-            color: #ff6b6b;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 15px;
-            display: none;
+            background: rgba(255,100,100,0.2); color: #ff6b6b;
+            padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 15px; display: none;
         }
+        .auth-error.show { display: block; }
 
-        .auth-error.show {
-            display: block;
-        }
+        .app-container { display: none; min-height: 100vh; padding-bottom: 80px; }
+        .app-container.active { display: block; }
 
-        /* Main App */
-        .app-container {
-            display: none;
-            min-height: 100vh;
-            padding-bottom: 80px;
-        }
-
-        .app-container.active {
-            display: block;
-        }
-
-        /* Header */
         .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(0,0,0,0.2);
-            position: sticky;
-            top: 0;
-            z-index: 50;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px; background: rgba(0,0,0,0.3);
+            position: sticky; top: 0; z-index: 50;
         }
-
-        .header-logo {
-            font-size: 18px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
+        .header-logo { font-size: 16px; font-weight: 700; color: #4ecdc4; }
+        .header-user { display: flex; align-items: center; gap: 10px; }
         .user-points {
-            background: rgba(78, 205, 196, 0.2);
-            color: #4ecdc4;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
+            background: rgba(78,205,196,0.2); color: #4ecdc4;
+            padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
+        }
+        .multiplier-badge {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #000; padding: 3px 8px; border-radius: 10px;
+            font-size: 11px; font-weight: 700;
+        }
+        .user-avatar {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 13px; cursor: pointer;
         }
 
-        /* Views */
-        .view {
-            display: none;
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        .view { display: none; padding: 16px; max-width: 600px; margin: 0 auto; }
+        .view.active { display: block; }
 
-        .view.active {
-            display: block;
+        /* Dashboard */
+        .countdown-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
         }
+        .countdown-card {
+            background: rgba(255,255,255,0.05); border-radius: 14px;
+            padding: 16px; text-align: center;
+        }
+        .countdown-card.urgent { background: linear-gradient(135deg, rgba(255,100,100,0.2), rgba(255,100,100,0.1)); }
+        .countdown-card.event { background: linear-gradient(135deg, rgba(78,205,196,0.2), rgba(78,205,196,0.1)); }
+        .countdown-value { font-size: 32px; font-weight: 800; }
+        .countdown-card.urgent .countdown-value { color: #ff6b6b; }
+        .countdown-card.event .countdown-value { color: #4ecdc4; }
+        .countdown-label { font-size: 11px; color: #888; margin-top: 4px; }
 
-        /* Dashboard View */
         .streak-card {
             background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 25px;
+            border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 16px;
+        }
+        .streak-row { display: flex; justify-content: center; align-items: center; gap: 20px; }
+        .streak-stat { text-align: center; }
+        .streak-number { font-size: 42px; font-weight: 800; line-height: 1; }
+        .streak-label { font-size: 12px; opacity: 0.9; }
+        .streak-multiplier {
+            background: rgba(255,255,255,0.2); padding: 8px 16px;
+            border-radius: 12px; font-weight: 700;
         }
 
-        .streak-number {
-            font-size: 72px;
-            font-weight: 800;
-            line-height: 1;
+        .daily-challenge {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.1));
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 16px; padding: 16px; margin-bottom: 16px;
         }
-
-        .streak-label {
-            font-size: 16px;
-            opacity: 0.9;
+        .daily-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
         }
-
-        .streak-fire {
-            font-size: 40px;
-            margin-top: 10px;
+        .daily-title { font-size: 14px; font-weight: 700; color: #ffd700; }
+        .daily-timer { font-size: 12px; color: #ffa500; }
+        .daily-task { font-size: 14px; margin-bottom: 8px; }
+        .daily-points {
+            display: inline-block; background: rgba(255,215,0,0.3);
+            padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; color: #ffd700;
         }
 
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px;
         }
-
         .stat-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
+            background: rgba(255,255,255,0.05); border-radius: 14px; padding: 16px; text-align: center;
         }
+        .stat-value { font-size: 24px; font-weight: 700; color: #4ecdc4; }
+        .stat-label { font-size: 11px; color: #888; margin-top: 4px; }
 
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #4ecdc4;
+        .milestones-section { margin-bottom: 20px; }
+        .section-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .milestone-item {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.03); border-radius: 12px;
+            padding: 12px; margin-bottom: 8px;
         }
-
-        .stat-label {
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
+        .milestone-item.achieved { background: rgba(78,205,196,0.15); }
+        .milestone-icon { font-size: 24px; }
+        .milestone-info { flex: 1; }
+        .milestone-name { font-size: 13px; font-weight: 600; }
+        .milestone-desc { font-size: 11px; color: #888; }
+        .milestone-points {
+            background: rgba(78,205,196,0.2); color: #4ecdc4;
+            padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600;
         }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .recent-activity {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 20px;
-        }
-
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: rgba(78, 205, 196, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .activity-text {
-            flex: 1;
-        }
-
-        .activity-title {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .activity-time {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .activity-points {
-            color: #4ecdc4;
-            font-weight: 600;
-            font-size: 14px;
-        }
+        .milestone-item.achieved .milestone-points { background: #4ecdc4; color: #000; }
 
         /* Tasks View */
-        .week-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
+        .phase-tabs {
+            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 16px;
         }
+        .phase-tab {
+            padding: 8px 14px; background: rgba(255,255,255,0.08);
+            border: none; border-radius: 20px; color: #888;
+            font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600;
+            white-space: nowrap; cursor: pointer;
+        }
+        .phase-tab.active { background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); color: white; }
+        .phase-tab.locked { opacity: 0.4; }
 
-        .week-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
+        .task-category {
+            background: rgba(255,255,255,0.05); border-radius: 16px;
+            padding: 16px; margin-bottom: 16px;
         }
-
-        .week-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #4ecdc4;
+        .category-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
         }
-
-        .week-progress-bar {
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .week-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4ecdc4, #44a08d);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
+        .category-title { font-size: 14px; font-weight: 700; color: #4ecdc4; }
+        .category-progress { font-size: 12px; color: #888; }
 
         .task-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 15px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 14px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 12px; background: rgba(255,255,255,0.03);
+            border-radius: 12px; margin-bottom: 8px; cursor: pointer;
         }
-
-        .task-item:hover {
-            background: rgba(255,255,255,0.08);
-        }
-
-        .task-item.completed {
-            opacity: 0.5;
-        }
-
+        .task-item:hover { background: rgba(255,255,255,0.06); }
+        .task-item.completed { opacity: 0.5; }
+        .task-item.hard { border-left: 3px solid #ff6b6b; }
         .task-checkbox {
-            width: 26px;
-            height: 26px;
-            border: 2px solid #4ecdc4;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
+            width: 24px; height: 24px; border: 2px solid #4ecdc4;
+            border-radius: 6px; display: flex; align-items: center;
+            justify-content: center; flex-shrink: 0;
         }
-
-        .task-item.completed .task-checkbox {
-            background: #4ecdc4;
-        }
-
-        .task-checkbox svg {
-            width: 14px;
-            height: 14px;
-            stroke: white;
-            stroke-width: 3;
-            opacity: 0;
-        }
-
-        .task-item.completed .task-checkbox svg {
-            opacity: 1;
-        }
-
-        .task-content {
-            flex: 1;
-        }
-
-        .task-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-
-        .task-item.completed .task-title {
-            text-decoration: line-through;
-        }
-
-        .task-desc {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .task-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
+        .task-item.completed .task-checkbox { background: #4ecdc4; }
+        .task-checkbox svg { width: 14px; height: 14px; stroke: white; stroke-width: 3; opacity: 0; }
+        .task-item.completed .task-checkbox svg { opacity: 1; }
+        .task-content { flex: 1; }
+        .task-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+        .task-item.completed .task-title { text-decoration: line-through; }
+        .task-desc { font-size: 11px; color: #888; line-height: 1.4; }
+        .task-meta { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
         .task-points-badge {
-            background: rgba(78, 205, 196, 0.2);
-            color: #4ecdc4;
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 600;
+            background: rgba(78,205,196,0.2); color: #4ecdc4;
+            padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600;
         }
-
+        .task-points-badge.high { background: rgba(255,107,107,0.2); color: #ff6b6b; }
         .task-proof-badge {
-            background: rgba(255, 200, 100, 0.2);
-            color: #ffc864;
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 600;
+            background: rgba(255,200,100,0.2); color: #ffc864;
+            padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600;
         }
+        .task-proof-badge.uploaded { background: rgba(100,255,150,0.2); color: #64ff96; }
 
-        .task-proof-badge.uploaded {
-            background: rgba(100, 255, 150, 0.2);
-            color: #64ff96;
-        }
+        /* Leaderboard */
+        .leaderboard-header { text-align: center; margin-bottom: 20px; }
+        .leaderboard-title { font-size: 20px; font-weight: 800; }
+        .leaderboard-subtitle { color: #888; font-size: 13px; }
 
-        /* Leaderboard View */
-        .leaderboard-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .leaderboard-title {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 5px;
-        }
-
-        .leaderboard-subtitle {
-            color: #888;
-            font-size: 14px;
-        }
-
-        .podium {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 10px;
-            margin-bottom: 30px;
-            padding: 0 10px;
-        }
-
-        .podium-place {
-            text-align: center;
-            flex: 1;
-            max-width: 120px;
-        }
-
+        .podium { display: flex; justify-content: center; align-items: flex-end; gap: 8px; margin-bottom: 24px; }
+        .podium-place { text-align: center; flex: 1; max-width: 100px; }
         .podium-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 20px;
-            position: relative;
+            width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 18px; position: relative;
         }
-
-        .podium-place:nth-child(2) .podium-avatar {
-            width: 70px;
-            height: 70px;
-            font-size: 24px;
-        }
-
-        .podium-medal {
-            position: absolute;
-            bottom: -5px;
-            right: -5px;
-            font-size: 20px;
-        }
-
-        .podium-name {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .podium-points {
-            font-size: 12px;
-            color: #4ecdc4;
-            font-weight: 600;
-        }
-
-        .podium-bar {
-            margin-top: 10px;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .podium-place:nth-child(1) .podium-bar {
-            height: 60px;
-            background: linear-gradient(180deg, #c0c0c0 0%, #8a8a8a 100%);
-        }
-
-        .podium-place:nth-child(2) .podium-bar {
-            height: 80px;
-            background: linear-gradient(180deg, #ffd700 0%, #b8860b 100%);
-        }
-
-        .podium-place:nth-child(3) .podium-bar {
-            height: 50px;
-            background: linear-gradient(180deg, #cd7f32 0%, #8b4513 100%);
-        }
-
+        .podium-place:nth-child(2) .podium-avatar { width: 60px; height: 60px; font-size: 22px; }
+        .podium-medal { position: absolute; bottom: -4px; right: -4px; font-size: 16px; }
+        .podium-name { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .podium-points { font-size: 11px; color: #4ecdc4; font-weight: 600; }
+        .podium-bar { margin-top: 8px; border-radius: 6px 6px 0 0; }
+        .podium-place:nth-child(1) .podium-bar { height: 50px; background: linear-gradient(180deg, #c0c0c0, #8a8a8a); }
+        .podium-place:nth-child(2) .podium-bar { height: 70px; background: linear-gradient(180deg, #ffd700, #b8860b); }
+        .podium-place:nth-child(3) .podium-bar { height: 40px; background: linear-gradient(180deg, #cd7f32, #8b4513); }
         .podium-place:nth-child(1) .podium-avatar { background: linear-gradient(135deg, #c0c0c0, #8a8a8a); }
         .podium-place:nth-child(2) .podium-avatar { background: linear-gradient(135deg, #ffd700, #b8860b); }
         .podium-place:nth-child(3) .podium-avatar { background: linear-gradient(135deg, #cd7f32, #8b4513); }
 
-        .leaderboard-list {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
+        .leaderboard-list { background: rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden; }
         .leaderboard-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-
-        .leaderboard-item:last-child {
-            border-bottom: none;
-        }
-
-        .leaderboard-item.current-user {
-            background: rgba(78, 205, 196, 0.1);
-        }
-
-        .leaderboard-rank {
-            width: 30px;
-            font-weight: 700;
-            color: #888;
-            font-size: 14px;
-        }
-
+        .leaderboard-item:last-child { border-bottom: none; }
+        .leaderboard-item.current-user { background: rgba(78,205,196,0.1); }
+        .leaderboard-rank { width: 28px; font-weight: 700; color: #888; font-size: 13px; }
         .leaderboard-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 36px; height: 36px; border-radius: 50%;
             background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 13px;
         }
+        .leaderboard-info { flex: 1; }
+        .leaderboard-name { font-size: 13px; font-weight: 600; }
+        .leaderboard-streak { font-size: 11px; color: #888; }
+        .leaderboard-points { font-weight: 700; color: #4ecdc4; font-size: 14px; }
 
-        .leaderboard-info {
-            flex: 1;
-        }
-
-        .leaderboard-name {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .leaderboard-streak {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .leaderboard-points {
-            font-weight: 700;
-            color: #4ecdc4;
-        }
-
-        /* Profile View */
-        .profile-header {
-            text-align: center;
-            padding: 30px 0;
-        }
-
+        /* Profile */
+        .profile-header { text-align: center; padding: 24px 0; }
         .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+            width: 80px; height: 80px; border-radius: 50%;
             background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 36px;
-            margin: 0 auto 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 32px; margin: 0 auto 12px;
         }
-
-        .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
+        .profile-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .profile-email { color: #888; font-size: 13px; }
+        .profile-badges { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+        .badge {
+            background: rgba(78,205,196,0.2); color: #4ecdc4;
+            padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600;
         }
-
-        .profile-email {
-            color: #888;
-            font-size: 14px;
-        }
+        .badge.gold { background: rgba(255,215,0,0.2); color: #ffd700; }
 
         .profile-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin: 30px 0;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0;
         }
-
         .profile-stat {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 20px 10px;
-            text-align: center;
+            background: rgba(255,255,255,0.05); border-radius: 14px; padding: 16px; text-align: center;
         }
+        .profile-stat-value { font-size: 22px; font-weight: 700; color: #4ecdc4; }
+        .profile-stat-label { font-size: 10px; color: #888; margin-top: 4px; }
 
-        .profile-stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #4ecdc4;
-        }
-
-        .profile-stat-label {
-            font-size: 11px;
-            color: #888;
-            margin-top: 5px;
-        }
-
-        .profile-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-
+        .profile-section { background: rgba(255,255,255,0.05); border-radius: 14px; margin-bottom: 12px; }
         .profile-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer;
-            transition: background 0.3s ease;
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;
         }
-
-        .profile-option:last-child {
-            border-bottom: none;
-        }
-
-        .profile-option:hover {
-            background: rgba(255,255,255,0.05);
-        }
-
-        .profile-option-icon {
-            font-size: 20px;
-        }
-
-        .profile-option-text {
-            flex: 1;
-            font-size: 14px;
-        }
-
-        .profile-option-arrow {
-            color: #666;
-        }
+        .profile-option:last-child { border-bottom: none; }
+        .profile-option:hover { background: rgba(255,255,255,0.03); }
+        .profile-option-icon { font-size: 18px; }
+        .profile-option-text { flex: 1; font-size: 13px; }
+        .profile-option-arrow { color: #666; }
 
         .logout-btn {
-            width: 100%;
-            padding: 16px;
-            background: rgba(255, 100, 100, 0.2);
-            border: none;
-            border-radius: 12px;
-            color: #ff6b6b;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            margin-top: 20px;
+            width: 100%; padding: 14px;
+            background: rgba(255,100,100,0.2); border: none; border-radius: 12px;
+            color: #ff6b6b; font-family: 'Poppins', sans-serif; font-weight: 600;
+            font-size: 14px; cursor: pointer; margin-top: 16px;
         }
 
-        /* Bottom Navigation */
+        /* Bottom Nav */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(26,26,46,0.98); backdrop-filter: blur(20px);
+            display: flex; justify-content: space-around;
+            padding: 8px 0 20px; border-top: 1px solid rgba(255,255,255,0.05);
         }
-
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 16px;
-            border: none;
-            background: transparent;
-            color: #666;
-            font-family: 'Poppins', sans-serif;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            padding: 6px 14px; border: none; background: transparent;
+            color: #666; font-family: 'Poppins', sans-serif; font-size: 10px; cursor: pointer;
         }
-
-        .nav-item.active {
-            color: #4ecdc4;
-        }
-
-        .nav-item svg {
-            width: 24px;
-            height: 24px;
-        }
+        .nav-item.active { color: #4ecdc4; }
+        .nav-item svg { width: 22px; height: 22px; }
 
         /* Modal */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            padding: 20px;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85); display: none;
+            align-items: center; justify-content: center; z-index: 200; padding: 20px;
         }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
+        .modal-overlay.show { display: flex; }
         .modal {
-            background: #1a1a2e;
-            border-radius: 24px;
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-            max-height: 90vh;
-            overflow-y: auto;
+            background: #1a1a2e; border-radius: 20px; padding: 24px;
+            width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto;
         }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .modal-desc {
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-
+        .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .modal-desc { color: #888; font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
         .upload-area {
-            border: 2px dashed rgba(78, 205, 196, 0.5);
-            border-radius: 16px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
+            border: 2px dashed rgba(78,205,196,0.5); border-radius: 14px;
+            padding: 32px 16px; text-align: center; cursor: pointer; margin-bottom: 16px;
         }
-
-        .upload-area:hover {
-            border-color: #4ecdc4;
-            background: rgba(78, 205, 196, 0.05);
-        }
-
-        .upload-area.has-file {
-            border-color: #4ecdc4;
-            background: rgba(78, 205, 196, 0.1);
-        }
-
-        .upload-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .upload-text {
-            color: #888;
-            font-size: 14px;
-        }
-
-        .upload-preview {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 12px;
-            margin-top: 15px;
-        }
-
-        .modal-btns {
-            display: flex;
-            gap: 10px;
-        }
-
+        .upload-area:hover { border-color: #4ecdc4; background: rgba(78,205,196,0.05); }
+        .upload-area.has-file { border-color: #4ecdc4; background: rgba(78,205,196,0.1); }
+        .upload-icon { font-size: 40px; margin-bottom: 8px; }
+        .upload-text { color: #888; font-size: 13px; }
+        .upload-preview { max-width: 100%; max-height: 180px; border-radius: 10px; margin-top: 12px; }
+        .modal-btns { display: flex; gap: 10px; }
         .modal-btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            flex: 1; padding: 12px; border: none; border-radius: 10px;
+            font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer;
         }
+        .modal-btn.primary { background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); color: white; }
+        .modal-btn.secondary { background: rgba(255,255,255,0.1); color: white; }
 
-        .modal-btn.primary {
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            color: white;
-        }
-
-        .modal-btn.secondary {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        /* Toast */
         .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #333;
-            color: white;
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-size: 14px;
-            z-index: 300;
-            opacity: 0;
-            transition: all 0.3s ease;
+            position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: #333; color: white; padding: 12px 20px; border-radius: 10px;
+            font-size: 13px; z-index: 300; opacity: 0; transition: all 0.3s ease;
         }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        .toast.success {
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-        }
-
-        .toast.error {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
-        }
-
-        /* Setup Notice */
-        .setup-notice {
-            background: rgba(255, 200, 100, 0.2);
-            border: 1px solid rgba(255, 200, 100, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 20px;
-            text-align: center;
-        }
-
-        .setup-notice h3 {
-            color: #ffc864;
-            margin-bottom: 10px;
-        }
-
-        .setup-notice p {
-            color: #ccc;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .setup-notice code {
-            background: rgba(0,0,0,0.3);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 13px;
-        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.success { background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); }
+        .toast.error { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%); }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loading-screen">
-        <div class="loader"></div>
-    </div>
+    <div class="loading-screen" id="loading-screen"><div class="loader"></div></div>
 
-    <!-- Auth Screen -->
     <div class="auth-screen" id="auth-screen">
         <div class="auth-logo">🏃‍♂️</div>
-        <h1 class="auth-title">Team Friendship</h1>
-        <p class="auth-subtitle">Jacksonville Fundraising Challenge</p>
-
+        <h1 class="auth-title">TF Jacksonville</h1>
+        <p class="auth-subtitle">Fundraising Challenge</p>
         <div class="auth-box">
             <div class="auth-tabs">
                 <button class="auth-tab active" onclick="showAuthForm('login')">Sign In</button>
                 <button class="auth-tab" onclick="showAuthForm('signup')">Sign Up</button>
             </div>
-
             <div class="auth-error" id="auth-error"></div>
-
-            <!-- Login Form -->
             <form class="auth-form active" id="login-form" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label>Email</label>
@@ -1057,8 +408,6 @@
                 </div>
                 <button type="submit" class="auth-btn" id="login-btn">Sign In</button>
             </form>
-
-            <!-- Signup Form -->
             <form class="auth-form" id="signup-form" onsubmit="handleSignup(event)">
                 <div class="form-group">
                     <label>Full Name</label>
@@ -1074,9 +423,7 @@
                 </div>
                 <button type="submit" class="auth-btn" id="signup-btn">Create Account</button>
             </form>
-
             <div class="auth-divider">or</div>
-
             <button class="google-btn" onclick="handleGoogleLogin()">
                 <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                 Continue with Google
@@ -1084,96 +431,89 @@
         </div>
     </div>
 
-    <!-- Main App Container -->
     <div class="app-container" id="app-container">
-        <!-- Header -->
         <header class="app-header">
             <div class="header-logo">TF Jacksonville</div>
             <div class="header-user">
+                <span class="multiplier-badge" id="multiplier-badge" style="display:none">1.25x</span>
                 <div class="user-points" id="header-points">0 pts</div>
                 <div class="user-avatar" id="header-avatar" onclick="showView('profile')">?</div>
             </div>
         </header>
 
-        <!-- Dashboard View -->
         <div class="view active" id="dashboard-view">
-            <div class="streak-card">
-                <div class="streak-number" id="dash-streak">0</div>
-                <div class="streak-label">Day Streak</div>
-                <div class="streak-fire" id="dash-fire"></div>
+            <div class="countdown-row">
+                <div class="countdown-card urgent">
+                    <div class="countdown-value" id="deadline-days">--</div>
+                    <div class="countdown-label">Days to Deadline (Jan 21)</div>
+                </div>
+                <div class="countdown-card event">
+                    <div class="countdown-value" id="event-days">--</div>
+                    <div class="countdown-label">Days to Event (Jan 30)</div>
+                </div>
             </div>
 
-            <div class="stats-grid" style="margin-bottom:15px">
-                <div class="stat-card" style="background: linear-gradient(135deg, rgba(255,100,100,0.2), rgba(255,150,100,0.2));">
-                    <div class="stat-value" id="deadline-countdown" style="color:#ff6b6b">--</div>
-                    <div class="stat-label">Days to Deadline (Jan 21)</div>
+            <div class="streak-card">
+                <div class="streak-row">
+                    <div class="streak-stat">
+                        <div class="streak-number" id="dash-streak">0</div>
+                        <div class="streak-label">Day Streak</div>
+                    </div>
+                    <div class="streak-multiplier" id="streak-multiplier">1x Points</div>
+                    <div class="streak-stat">
+                        <div class="streak-number" id="dash-points">0</div>
+                        <div class="streak-label">Total Points</div>
+                    </div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, rgba(78,205,196,0.2), rgba(68,160,141,0.2));">
-                    <div class="stat-value" id="event-countdown">--</div>
-                    <div class="stat-label">Days to Event (Jan 30)</div>
+            </div>
+
+            <div class="daily-challenge" id="daily-challenge">
+                <div class="daily-header">
+                    <span class="daily-title">🔥 Challenge of the Day</span>
+                    <span class="daily-timer" id="daily-timer">Ends in --:--</span>
                 </div>
+                <div class="daily-task" id="daily-task">Loading...</div>
+                <span class="daily-points" id="daily-points">+0 BONUS pts</span>
             </div>
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value" id="dash-points">0</div>
-                    <div class="stat-label">Total Points</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="dash-tasks">0/23</div>
+                    <div class="stat-value" id="dash-tasks">0</div>
                     <div class="stat-label">Tasks Done</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="dash-rank">#--</div>
                     <div class="stat-label">Leaderboard</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="dash-proofs">0</div>
-                    <div class="stat-label">Proofs Uploaded</div>
-                </div>
             </div>
 
-            <h3 class="section-title">Recent Activity</h3>
-            <div class="recent-activity" id="recent-activity">
-                <div class="activity-item">
-                    <div class="activity-icon">🎉</div>
-                    <div class="activity-text">
-                        <div class="activity-title">Welcome to Team Friendship!</div>
-                        <div class="activity-time">Just now</div>
-                    </div>
-                </div>
+            <div class="milestones-section">
+                <h3 class="section-title">Fundraising Milestones</h3>
+                <div id="milestones-list"></div>
             </div>
         </div>
 
-        <!-- Tasks View -->
         <div class="view" id="tasks-view">
-            <!-- Tasks will be rendered here -->
+            <div class="phase-tabs" id="phase-tabs"></div>
+            <div id="tasks-content"></div>
         </div>
 
-        <!-- Leaderboard View -->
         <div class="view" id="leaderboard-view">
             <div class="leaderboard-header">
                 <h2 class="leaderboard-title">Leaderboard</h2>
-                <p class="leaderboard-subtitle">Top fundraisers this week</p>
+                <p class="leaderboard-subtitle">Top fundraising challengers</p>
             </div>
-
-            <div class="podium" id="podium">
-                <!-- Podium will be rendered here -->
-            </div>
-
-            <div class="leaderboard-list" id="leaderboard-list">
-                <!-- Leaderboard items will be rendered here -->
-            </div>
+            <div class="podium" id="podium"></div>
+            <div class="leaderboard-list" id="leaderboard-list"></div>
         </div>
 
-        <!-- Profile View -->
         <div class="view" id="profile-view">
             <div class="profile-header">
                 <div class="profile-avatar" id="profile-avatar">?</div>
                 <h2 class="profile-name" id="profile-name">Runner</h2>
                 <p class="profile-email" id="profile-email">email@example.com</p>
+                <div class="profile-badges" id="profile-badges"></div>
             </div>
-
             <div class="profile-stats">
                 <div class="profile-stat">
                     <div class="profile-stat-value" id="profile-points">0</div>
@@ -1181,14 +521,13 @@
                 </div>
                 <div class="profile-stat">
                     <div class="profile-stat-value" id="profile-streak">0</div>
-                    <div class="profile-stat-label">Day Streak</div>
+                    <div class="profile-stat-label">Streak</div>
                 </div>
                 <div class="profile-stat">
                     <div class="profile-stat-value" id="profile-tasks">0</div>
                     <div class="profile-stat-label">Tasks</div>
                 </div>
             </div>
-
             <div class="profile-section">
                 <div class="profile-option" onclick="window.location.href='index.html'">
                     <span class="profile-option-icon">📚</span>
@@ -1197,15 +536,13 @@
                 </div>
                 <div class="profile-option" onclick="shareProfile()">
                     <span class="profile-option-icon">🔗</span>
-                    <span class="profile-option-text">Share My Progress</span>
+                    <span class="profile-option-text">Share Progress</span>
                     <span class="profile-option-arrow">›</span>
                 </div>
             </div>
-
             <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
         </div>
 
-        <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <button class="nav-item active" onclick="showView('dashboard')">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -1226,19 +563,16 @@
         </nav>
     </div>
 
-    <!-- Upload Modal -->
     <div class="modal-overlay" id="upload-modal">
         <div class="modal">
             <h3 class="modal-title" id="modal-task-title">Upload Proof</h3>
-            <p class="modal-desc" id="modal-task-desc">Take a screenshot or photo showing you completed this task</p>
-
+            <p class="modal-desc" id="modal-task-desc">Screenshot or photo showing you completed this task</p>
             <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
                 <div class="upload-icon">📷</div>
                 <div class="upload-text">Tap to select image</div>
                 <img class="upload-preview" id="upload-preview" style="display:none">
             </div>
             <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
-
             <div class="modal-btns">
                 <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
                 <button class="modal-btn primary" id="submit-proof-btn" onclick="submitProof()" disabled>Submit</button>
@@ -1246,113 +580,121 @@
         </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
     <script>
-        // ============================================
-        // FIREBASE CONFIGURATION
-        // ============================================
-        // IMPORTANT: Replace this with your Firebase config!
-        // Get it from Firebase Console > Project Settings > Your apps > Config
-
         const firebaseConfig = {
             apiKey: "AIzaSyBK5Y7oKleZLUnUFoOLaRB_cXNmvKEDRRY",
             authDomain: "team-friendship.firebaseapp.com",
             projectId: "team-friendship",
             storageBucket: "team-friendship.firebasestorage.app",
             messagingSenderId: "747924547341",
-            appId: "1:747924547341:web:57669d47e1f61d3a833244",
-            measurementId: "G-X4H4DY11HR"
+            appId: "1:747924547341:web:57669d47e1f61d3a833244"
         };
 
-        // Check if Firebase is configured
-        const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
 
-        // Initialize Firebase if configured
-        let auth, db, storage;
-        if (isFirebaseConfigured) {
-            firebase.initializeApp(firebaseConfig);
-            auth = firebase.auth();
-            db = firebase.firestore();
-            storage = firebase.storage();
-        }
-
-        // ============================================
-        // TASK DATA
-        // ============================================
-        const tasks = [
-            // Phase 1: Setup (Jan 13-14)
-            { id: "1-1", week: 1, title: "Set your fundraising goal", desc: "Aim high! What's your target?", points: 10 },
-            { id: "1-2", week: 1, title: "Build your prospect list", desc: "List 50+ people - family, friends, work, community", points: 20 },
-            { id: "1-3", week: 1, title: "Update your fundraising page", desc: "Add a great photo and personal story", points: 10 },
-            { id: "1-4", week: 1, title: "Announce on social media", desc: "Post that you're running for Friendship Circle Jacksonville!", points: 15 },
-            // Phase 2: Inner Circle (Jan 15-16)
-            { id: "2-1", week: 2, title: "Message immediate family", desc: "Parents, siblings, grandparents - they want to support you!", points: 15 },
-            { id: "2-2", week: 2, title: "Text your closest friends", desc: "Send personal messages to your top 10 friends", points: 15 },
-            { id: "2-3", week: 2, title: "Call 3 people today", desc: "Phone calls are more effective than texts!", points: 20 },
-            { id: "2-4", week: 2, title: "Post a training/prep update", desc: "Share your excitement for the Jan 30 event!", points: 10 },
-            // Phase 3: Expand Network (Jan 17-18)
-            { id: "3-1", week: 3, title: "Contact extended family", desc: "Aunts, uncles, cousins - everyone counts!", points: 15 },
-            { id: "3-2", week: 3, title: "Reach out to work contacts", desc: "Colleagues, boss, clients, vendors", points: 15 },
-            { id: "3-3", week: 3, title: "Ask about corporate matching", desc: "Many employers double donations!", points: 25 },
-            { id: "3-4", week: 3, title: "Contact community members", desc: "Shul, neighbors, school contacts", points: 15 },
-            { id: "3-5", week: 3, title: "Follow up with non-responders", desc: "Gentle reminder to those who haven't replied", points: 10 },
-            // Phase 4: Final Push (Jan 19-21) - DEADLINE JAN 21!
-            { id: "4-1", week: 4, title: "Post '3 days left!' update", desc: "Create urgency - fundraising ends Jan 21!", points: 15 },
-            { id: "4-2", week: 4, title: "Send final ask messages", desc: "Last chance outreach to everyone on your list", points: 20 },
-            { id: "4-3", week: 4, title: "Share an impact story", desc: "Post about what Friendship Circle does for kids", points: 15 },
-            { id: "4-4", week: 4, title: "Ask donors to share your page", desc: "Their networks can help you reach your goal!", points: 15 },
-            { id: "4-5", week: 4, title: "Thank your donors so far", desc: "Gratitude posts encourage more giving", points: 10 },
-            // Phase 5: Event Week (Jan 22-30)
-            { id: "5-1", week: 5, title: "Post event countdown", desc: "Build excitement for Jan 30!", points: 10 },
-            { id: "5-2", week: 5, title: "Share your final fundraising total", desc: "Celebrate what you raised!", points: 15 },
-            { id: "5-3", week: 5, title: "Event day posts", desc: "Share photos and videos from the event!", points: 20 },
-            { id: "5-4", week: 5, title: "Thank every donor personally", desc: "Send individual thank you messages", points: 25 },
-            { id: "5-5", week: 5, title: "Share your event experience", desc: "Post your favorite moment from the day", points: 15 },
+        // PHASES AND TASKS
+        const phases = [
+            { id: 1, name: "Go Back to the Well", dates: "Jan 13-16", startDate: "2026-01-13", endDate: "2026-01-16" },
+            { id: 2, name: "Expand the Circle", dates: "Jan 17-18", startDate: "2026-01-17", endDate: "2026-01-18" },
+            { id: 3, name: "Final 72 Hours", dates: "Jan 19-21", startDate: "2026-01-19", endDate: "2026-01-21" },
+            { id: 4, name: "Event Week", dates: "Jan 22-30", startDate: "2026-01-22", endDate: "2026-01-30" }
         ];
 
-        const weekNames = {
-            1: "Jan 13-14: Setup",
-            2: "Jan 15-16: Inner Circle",
-            3: "Jan 17-18: Expand Network",
-            4: "Jan 19-21: Final Push (Deadline!)",
-            5: "Jan 22-30: Event Week"
-        };
+        const tasks = [
+            // PHASE 1: Go Back to the Well (Jan 13-16)
+            { id: "1-1", phase: 1, title: "The Re-Ask", desc: "Message 3 people who already donated and ask if they'd consider adding to their gift. Screenshot the convos.", points: 25, hard: true },
+            { id: "1-2", phase: 1, title: "The Recruiter Ask", desc: "Ask 3 donors to each text ONE friend about your campaign. Provide them the exact text.", points: 20 },
+            { id: "1-3", phase: 1, title: "The Match Hunt", desc: "Ask 5 donors if their company matches charitable gifts. Screenshot proof you asked.", points: 20, bonus: "50 pts if you find a match!" },
+            { id: "1-4", phase: 1, title: "The Specific Amount Ask", desc: "Text 5 people asking for a SPECIFIC amount - '$50 would mean so much' not 'anything helps'.", points: 20 },
+            { id: "1-5", phase: 1, title: "The $100 Ask", desc: "Ask someone specifically for $100. Screenshot the ask - yes or no doesn't matter.", points: 25, hard: true },
+            { id: "1-6", phase: 1, title: "Post Your Stretch Goal", desc: "Share on social: 'I hit my minimum, now going for $X because [reason].' Tag Team Friendship.", points: 15 },
+            { id: "1-7", phase: 1, title: "The Call Challenge", desc: "Make 5 actual phone CALLS about fundraising. Not texts. Screenshot call log.", points: 30, hard: true },
 
-        // ============================================
-        // APP STATE
-        // ============================================
+            // PHASE 2: Expand the Circle (Jan 17-18)
+            { id: "2-1", phase: 2, title: "The LinkedIn Post", desc: "Post about your fundraising on LinkedIn. This is where $250 donors live.", points: 30, hard: true },
+            { id: "2-2", phase: 2, title: "The Boss Ask", desc: "Ask your boss or senior colleague to donate OR share with their network. Screenshot.", points: 35, hard: true },
+            { id: "2-3", phase: 2, title: "The Vendor/Client Ask", desc: "Ask a vendor, client, or business contact to donate.", points: 25 },
+            { id: "2-4", phase: 2, title: "The 'I Need Help' Post", desc: "Post a genuine, vulnerable ask. Not polished. Real. 'I'm nervous to ask but...'", points: 25 },
+            { id: "2-5", phase: 2, title: "Voice Note Blitz", desc: "Send 10 personalized voice note asks. Say their name, say why you thought of them.", points: 30 },
+            { id: "2-6", phase: 2, title: "Parent/Sibling Share", desc: "Ask a parent or sibling to post YOUR link on THEIR social media.", points: 20, bonus: "+15 if they do it!" },
+
+            // PHASE 3: Final 72 Hours (Jan 19-21)
+            { id: "3-1", phase: 3, title: "Countdown Blitz - Day 3", desc: "Post '3 days left!' update with your link.", points: 10 },
+            { id: "3-2", phase: 3, title: "Countdown Blitz - Day 2", desc: "Post '2 days left!' update with your link.", points: 10 },
+            { id: "3-3", phase: 3, title: "Countdown Blitz - Final Day", desc: "Post 'Final day!' update with your link.", points: 10 },
+            { id: "3-4", phase: 3, title: "The 'Almost There' Push", desc: "If within $200 of stretch goal, post exactly how much you need.", points: 20 },
+            { id: "3-5", phase: 3, title: "Non-Responder Follow-Up", desc: "Message everyone who saw but didn't donate. 'Just circling back...' Screenshot 10+ messages.", points: 25 },
+            { id: "3-6", phase: 3, title: "Final Hour Ask", desc: "On Jan 21, post a 'last chance' message in the final 6 hours.", points: 15 },
+            { id: "3-7", phase: 3, title: "The Hail Mary Call", desc: "Call your biggest potential donor who hasn't given. The one you've been nervous to call.", points: 30, hard: true },
+            { id: "3-8", phase: 3, title: "The Gratitude Bomb", desc: "Post thanking donors by first name publicly. Creates social proof!", points: 20 },
+
+            // PHASE 4: Event Week (Jan 22-30)
+            { id: "4-1", phase: 4, title: "Share Final Total", desc: "Share your final fundraising total with a gratitude post.", points: 20 },
+            { id: "4-2", phase: 4, title: "Packing/Prep Post", desc: "Post about packing or preparing for Jacksonville.", points: 10 },
+            { id: "4-3", phase: 4, title: "Excitement Post", desc: "Share what you're most excited about.", points: 15 },
+            { id: "4-4", phase: 4, title: "Thank Every Donor", desc: "Send individual thank you messages. Screenshot proof of at least 10.", points: 30 },
+            { id: "4-5", phase: 4, title: "Travel/Arrival Content", desc: "Post travel or arrival content.", points: 15 },
+            { id: "4-6", phase: 4, title: "Shabbat Dinner Content", desc: "Share Shabbat dinner content.", points: 20 },
+            { id: "4-7", phase: 4, title: "Race Day Posts", desc: "Share race day photos and updates.", points: 25 },
+            { id: "4-8", phase: 4, title: "Post-Race Reflection", desc: "Share your post-race reflection.", points: 25 },
+            { id: "4-9", phase: 4, title: "Testimonial", desc: "'What this meant to me' testimonial post.", points: 30 },
+
+            // UNCOMFORTABLE CHALLENGES (Always available, high points)
+            { id: "u-1", phase: 0, title: "Go Live", desc: "Do an Instagram/Facebook live about why you're running. Ask for donations in real-time.", points: 50, hard: true, category: "uncomfortable" },
+            { id: "u-2", phase: 0, title: "The Video Ask", desc: "Record a personal video asking for donations. Post it publicly.", points: 35, hard: true, category: "uncomfortable" },
+            { id: "u-3", phase: 0, title: "The 'I Hate Asking' Post", desc: "Write a post starting with 'I hate asking for money, but...' Be genuine.", points: 30, category: "uncomfortable" },
+            { id: "u-4", phase: 0, title: "Text Your Whole Contact List", desc: "Send your link to 50+ contacts at once via group text or broadcast. Screenshot.", points: 40, hard: true, category: "uncomfortable" },
+
+            // TEAM CHALLENGES
+            { id: "t-1", phase: 0, title: "The Tag Team", desc: "Get another TF runner to share YOUR page, you share THEIRS.", points: 15, category: "team" },
+            { id: "t-2", phase: 0, title: "Donor Hot Potato", desc: "Ask one of your donors to make a small donation ($18-36) to another runner.", points: 25, category: "team" }
+        ];
+
+        // DAILY CHALLENGES (rotate based on date)
+        const dailyChallenges = [
+            { date: "2026-01-13", task: "Make 3 phone calls about your fundraising today", points: 40 },
+            { date: "2026-01-14", task: "Send 5 personalized voice notes asking for donations", points: 35 },
+            { date: "2026-01-15", task: "Ask someone for exactly $100", points: 45 },
+            { date: "2026-01-16", task: "Post a video of yourself talking about why you're running", points: 50 },
+            { date: "2026-01-17", task: "Make a LinkedIn post about your fundraising", points: 40 },
+            { date: "2026-01-18", task: "Ask your boss or a senior colleague to donate", points: 45 },
+            { date: "2026-01-19", task: "Follow up with 10 people who haven't responded", points: 35 },
+            { date: "2026-01-20", task: "Go live on social media for at least 2 minutes", points: 60 },
+            { date: "2026-01-21", task: "Post 3 'last chance' messages throughout the day", points: 40 },
+            { date: "2026-01-22", task: "Send thank you messages to all your donors", points: 35 },
+            { date: "2026-01-23", task: "Share your final fundraising total publicly", points: 30 }
+        ];
+
+        // MILESTONES
+        const milestones = [
+            { id: "m1", name: "Goal Crusher", desc: "Hit 100% of minimum ($2,800)", amount: 2800, points: 50, icon: "🎯" },
+            { id: "m2", name: "Overachiever", desc: "Hit $3,500 (25% over)", amount: 3500, points: 75, icon: "⭐" },
+            { id: "m3", name: "Champion", desc: "Hit $4,000 (43% over)", amount: 4000, points: 100, icon: "🏆" },
+            { id: "m4", name: "Legend", desc: "Hit $5,000+", amount: 5000, points: 150, icon: "👑" }
+        ];
+
         let currentUser = null;
         let userData = null;
         let currentTaskId = null;
         let selectedFile = null;
+        let currentPhase = 1;
 
-        // ============================================
         // INITIALIZATION
-        // ============================================
         document.addEventListener('DOMContentLoaded', () => {
-            if (!isFirebaseConfigured) {
-                // Show demo mode
-                document.getElementById('loading-screen').classList.add('hidden');
-                showDemoMode();
-                return;
-            }
-
-            // Listen for auth state changes
             auth.onAuthStateChanged(async user => {
                 document.getElementById('loading-screen').classList.add('hidden');
-
                 if (user) {
                     currentUser = user;
-
-                    // Check if user document exists, if not create it
                     const userDoc = await db.collection('users').doc(user.uid).get();
                     if (!userDoc.exists) {
                         await db.collection('users').doc(user.uid).set({
@@ -1360,241 +702,153 @@
                             email: user.email,
                             points: 0,
                             streak: 1,
+                            multiplier: 1,
                             lastActive: firebase.firestore.FieldValue.serverTimestamp(),
                             completedTasks: [],
+                            dailyCompleted: [],
                             proofs: {},
+                            badges: [],
+                            fundraised: 0,
                             createdAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
                     }
-
                     loadUserData();
                 } else {
-                    currentUser = null;
-                    userData = null;
                     document.getElementById('auth-screen').classList.remove('hidden');
                     document.getElementById('app-container').classList.remove('active');
                 }
             });
         });
 
-        function showDemoMode() {
-            // Show a notice that Firebase needs to be configured
-            document.getElementById('auth-screen').innerHTML = `
-                <div class="auth-logo">🏃‍♂️</div>
-                <h1 class="auth-title">Team Friendship</h1>
-                <p class="auth-subtitle">Fundraising Challenge</p>
-
-                <div class="setup-notice">
-                    <h3>⚠️ Firebase Setup Required</h3>
-                    <p>To enable user accounts and cloud sync, you need to set up Firebase:</p>
-                    <br>
-                    <p>1. Go to <a href="https://console.firebase.google.com" target="_blank" style="color:#4ecdc4">Firebase Console</a></p>
-                    <p>2. Create a new project</p>
-                    <p>3. Enable Authentication (Email & Google)</p>
-                    <p>4. Create a Firestore database</p>
-                    <p>5. Enable Storage</p>
-                    <p>6. Copy your config to <code>app.html</code></p>
-                    <br>
-                    <p style="margin-top:15px">Or try the <a href="index.html" style="color:#4ecdc4">offline version</a> (no account needed)</p>
-                </div>
-            `;
-            document.getElementById('auth-screen').classList.remove('hidden');
-        }
-
-        // ============================================
-        // AUTHENTICATION
-        // ============================================
+        // AUTH
         function showAuthForm(form) {
             document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
             document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
             document.getElementById(form + '-form').classList.add('active');
             event.target.classList.add('active');
-            hideAuthError();
-        }
-
-        function showAuthError(message) {
-            const errorEl = document.getElementById('auth-error');
-            errorEl.textContent = message;
-            errorEl.classList.add('show');
-        }
-
-        function hideAuthError() {
             document.getElementById('auth-error').classList.remove('show');
         }
 
-        async function handleLogin(e) {
-            e.preventDefault();
-            if (!isFirebaseConfigured) return;
+        function showAuthError(msg) {
+            const el = document.getElementById('auth-error');
+            el.textContent = msg;
+            el.classList.add('show');
+        }
 
+        function handleLogin(e) {
+            e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             const btn = document.getElementById('login-btn');
-
             btn.disabled = true;
             btn.textContent = 'Signing in...';
-            hideAuthError();
 
-            // Fallback reload after 3 seconds
-            setTimeout(() => {
-                if (auth.currentUser) {
-                    window.location.reload();
-                }
-            }, 3000);
+            setTimeout(() => { if (auth.currentUser) window.location.reload(); }, 3000);
 
-            // Sign in then reload
             auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    window.location.reload();
-                })
-                .catch(error => {
-                    showAuthError(error.message);
+                .then(() => window.location.reload())
+                .catch(err => {
+                    showAuthError(err.message);
                     btn.disabled = false;
                     btn.textContent = 'Sign In';
                 });
         }
 
-        async function handleSignup(e) {
+        function handleSignup(e) {
             e.preventDefault();
-            if (!isFirebaseConfigured) return;
-
             const name = document.getElementById('signup-name').value;
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const btn = document.getElementById('signup-btn');
-
             btn.disabled = true;
             btn.textContent = 'Creating account...';
-            hideAuthError();
 
-            // Fallback reload after 3 seconds in case promises don't resolve
-            setTimeout(() => {
-                if (auth.currentUser) {
-                    window.location.reload();
-                }
-            }, 3000);
+            setTimeout(() => { if (auth.currentUser) window.location.reload(); }, 3000);
 
-            // Create auth account then reload
             auth.createUserWithEmailAndPassword(email, password)
                 .then(cred => {
-                    cred.user.updateProfile({ displayName: name }).then(() => {
-                        window.location.reload();
-                    }).catch(() => window.location.reload());
+                    cred.user.updateProfile({ displayName: name }).then(() => window.location.reload());
                 })
-                .catch(error => {
-                    console.error('Signup error:', error);
-                    showAuthError(error.message || 'Signup failed');
+                .catch(err => {
+                    showAuthError(err.message);
                     btn.disabled = false;
                     btn.textContent = 'Create Account';
                 });
         }
 
-        async function handleGoogleLogin() {
-            if (!isFirebaseConfigured) return;
-
-            try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                const result = await auth.signInWithPopup(provider);
-
-                // Check if user document exists
-                const userDoc = await db.collection('users').doc(result.user.uid).get();
-                if (!userDoc.exists) {
-                    await db.collection('users').doc(result.user.uid).set({
-                        name: result.user.displayName,
-                        email: result.user.email,
-                        points: 0,
-                        streak: 0,
-                        lastActive: firebase.firestore.FieldValue.serverTimestamp(),
-                        completedTasks: [],
-                        proofs: {},
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                }
-            } catch (error) {
-                showAuthError(error.message);
-            }
+        function handleGoogleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(err => showAuthError(err.message));
         }
 
-        async function handleLogout() {
-            if (!isFirebaseConfigured) return;
-            await auth.signOut();
-        }
+        function handleLogout() { auth.signOut(); }
 
-        // ============================================
         // USER DATA
-        // ============================================
         async function loadUserData() {
-            if (!currentUser) return;
-
-            try {
-                const doc = await db.collection('users').doc(currentUser.uid).get();
-                if (doc.exists) {
-                    userData = doc.data();
-
-                    // Check and update streak
-                    await checkStreak();
-
-                    // Show app
-                    document.getElementById('auth-screen').classList.add('hidden');
-                    document.getElementById('app-container').classList.add('active');
-
-                    updateUI();
-                    renderTasks();
-                    loadLeaderboard();
-                }
-            } catch (error) {
-                console.error('Error loading user data:', error);
-                showToast('Error loading data', 'error');
+            const doc = await db.collection('users').doc(currentUser.uid).get();
+            if (doc.exists) {
+                userData = doc.data();
+                await checkStreak();
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app-container').classList.add('active');
+                updateUI();
+                renderPhaseTabs();
+                renderTasks();
+                loadLeaderboard();
             }
         }
 
         async function checkStreak() {
-            if (!userData || !userData.lastActive) return;
-
+            if (!userData.lastActive) return;
             const lastActive = userData.lastActive.toDate();
             const now = new Date();
-            const diffDays = Math.floor((now - lastActive) / (1000 * 60 * 60 * 24));
+            const lastDay = new Date(lastActive.getFullYear(), lastActive.getMonth(), lastActive.getDate());
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const diffDays = Math.floor((today - lastDay) / (1000 * 60 * 60 * 24));
 
-            if (diffDays > 1) {
-                // Streak broken
-                await db.collection('users').doc(currentUser.uid).update({
-                    streak: 0,
-                    lastActive: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                userData.streak = 0;
+            let newStreak = userData.streak || 1;
+            let multiplier = 1;
+
+            if (diffDays === 0) {
+                // Same day, keep streak
+                newStreak = userData.streak;
             } else if (diffDays === 1) {
-                // New day, continue streak
-                await db.collection('users').doc(currentUser.uid).update({
-                    streak: firebase.firestore.FieldValue.increment(1),
-                    lastActive: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                userData.streak++;
+                // Next day, increment streak
+                newStreak = (userData.streak || 0) + 1;
+            } else {
+                // Missed days, reset
+                newStreak = 1;
             }
+
+            // Calculate multiplier (3+ days = 1.25x)
+            multiplier = newStreak >= 3 ? 1.25 : 1;
+
+            await db.collection('users').doc(currentUser.uid).update({
+                streak: newStreak,
+                multiplier: multiplier,
+                lastActive: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            userData.streak = newStreak;
+            userData.multiplier = multiplier;
         }
 
         function updateUI() {
-            if (!userData) return;
-
             const initial = (userData.name || 'U')[0].toUpperCase();
             const completedCount = userData.completedTasks?.length || 0;
-            const proofsCount = Object.keys(userData.proofs || {}).length;
 
             // Header
-            document.getElementById('header-points').textContent = userData.points + ' pts';
+            document.getElementById('header-points').textContent = Math.round(userData.points || 0) + ' pts';
             document.getElementById('header-avatar').textContent = initial;
 
-            // Dashboard
-            document.getElementById('dash-streak').textContent = userData.streak || 0;
-            document.getElementById('dash-points').textContent = userData.points || 0;
-            document.getElementById('dash-tasks').textContent = completedCount + '/23';
-            document.getElementById('dash-proofs').textContent = proofsCount;
-
-            // Streak fire
-            const streak = userData.streak || 0;
-            let fire = '';
-            if (streak >= 7) fire = '🔥🔥🔥';
-            else if (streak >= 3) fire = '🔥🔥';
-            else if (streak >= 1) fire = '🔥';
-            document.getElementById('dash-fire').textContent = fire;
+            // Multiplier badge
+            const multBadge = document.getElementById('multiplier-badge');
+            if (userData.multiplier > 1) {
+                multBadge.style.display = 'inline';
+                multBadge.textContent = userData.multiplier + 'x';
+            } else {
+                multBadge.style.display = 'none';
+            }
 
             // Countdowns
             const today = new Date();
@@ -1602,56 +856,145 @@
             const eventDay = new Date('2026-01-30');
             const deadlineDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
             const eventDays = Math.ceil((eventDay - today) / (1000 * 60 * 60 * 24));
-            document.getElementById('deadline-countdown').textContent = deadlineDays > 0 ? deadlineDays : (deadlineDays === 0 ? 'TODAY!' : 'PASSED');
-            document.getElementById('event-countdown').textContent = eventDays > 0 ? eventDays : (eventDays === 0 ? 'TODAY!' : 'PASSED');
+            document.getElementById('deadline-days').textContent = deadlineDays > 0 ? deadlineDays : (deadlineDays === 0 ? 'TODAY!' : 'DONE');
+            document.getElementById('event-days').textContent = eventDays > 0 ? eventDays : (eventDays === 0 ? 'TODAY!' : 'DONE');
+
+            // Dashboard
+            document.getElementById('dash-streak').textContent = userData.streak || 0;
+            document.getElementById('dash-points').textContent = Math.round(userData.points || 0);
+            document.getElementById('streak-multiplier').textContent = (userData.multiplier || 1) + 'x Points';
+            document.getElementById('dash-tasks').textContent = completedCount;
+
+            // Daily Challenge
+            updateDailyChallenge();
+
+            // Milestones
+            renderMilestones();
 
             // Profile
             document.getElementById('profile-avatar').textContent = initial;
             document.getElementById('profile-name').textContent = userData.name || 'Runner';
             document.getElementById('profile-email').textContent = userData.email || '';
-            document.getElementById('profile-points').textContent = userData.points || 0;
+            document.getElementById('profile-points').textContent = Math.round(userData.points || 0);
             document.getElementById('profile-streak').textContent = userData.streak || 0;
             document.getElementById('profile-tasks').textContent = completedCount;
+
+            // Badges
+            const badgesHtml = (userData.badges || []).map(b => `<span class="badge gold">${b}</span>`).join('');
+            document.getElementById('profile-badges').innerHTML = badgesHtml;
         }
 
-        // ============================================
-        // TASKS
-        // ============================================
-        function renderTasks() {
-            const container = document.getElementById('tasks-view');
-            container.innerHTML = '';
+        function updateDailyChallenge() {
+            const today = new Date().toISOString().split('T')[0];
+            const daily = dailyChallenges.find(d => d.date === today);
 
-            const groupedTasks = {};
-            tasks.forEach(task => {
-                if (!groupedTasks[task.week]) groupedTasks[task.week] = [];
-                groupedTasks[task.week].push(task);
-            });
+            if (daily) {
+                document.getElementById('daily-task').textContent = daily.task;
+                document.getElementById('daily-points').textContent = '+' + daily.points + ' BONUS pts';
 
-            for (let week = 1; week <= 5; week++) {
-                const weekTasks = groupedTasks[week] || [];
-                const completedInWeek = weekTasks.filter(t => userData?.completedTasks?.includes(t.id)).length;
-                const progress = (completedInWeek / weekTasks.length) * 100;
+                // Timer until midnight
+                const now = new Date();
+                const midnight = new Date(now);
+                midnight.setHours(24, 0, 0, 0);
+                const diff = midnight - now;
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById('daily-timer').textContent = `Ends in ${hours}h ${mins}m`;
+            } else {
+                document.getElementById('daily-challenge').style.display = 'none';
+            }
+        }
 
-                const section = document.createElement('div');
-                section.className = 'week-section';
-                section.innerHTML = `
-                    <div class="week-header">
-                        <div class="week-title">${weekNames[week]}</div>
-                        <div class="week-progress">${completedInWeek}/${weekTasks.length}</div>
-                    </div>
-                    <div class="week-progress-bar">
-                        <div class="week-progress-fill" style="width: ${progress}%"></div>
+        function renderMilestones() {
+            const fundraised = userData.fundraised || 0;
+            const html = milestones.map(m => {
+                const achieved = fundraised >= m.amount;
+                return `
+                    <div class="milestone-item ${achieved ? 'achieved' : ''}">
+                        <div class="milestone-icon">${m.icon}</div>
+                        <div class="milestone-info">
+                            <div class="milestone-name">${m.name}</div>
+                            <div class="milestone-desc">${m.desc}</div>
+                        </div>
+                        <div class="milestone-points">${achieved ? '✓ ' : ''}+${m.points}</div>
                     </div>
                 `;
+            }).join('');
+            document.getElementById('milestones-list').innerHTML = html;
+        }
 
-                weekTasks.forEach(task => {
-                    const isCompleted = userData?.completedTasks?.includes(task.id);
-                    const hasProof = userData?.proofs?.[task.id];
+        // TASKS
+        function renderPhaseTabs() {
+            const today = new Date();
+            const html = phases.map(p => {
+                const start = new Date(p.startDate);
+                const end = new Date(p.endDate);
+                end.setHours(23, 59, 59);
+                const isActive = today >= start && today <= end;
+                const isLocked = today < start;
 
-                    const taskEl = document.createElement('div');
-                    taskEl.className = 'task-item' + (isCompleted ? ' completed' : '');
-                    taskEl.onclick = () => openTaskModal(task);
-                    taskEl.innerHTML = `
+                if (isActive) currentPhase = p.id;
+
+                return `
+                    <button class="phase-tab ${currentPhase === p.id ? 'active' : ''} ${isLocked ? 'locked' : ''}"
+                            onclick="selectPhase(${p.id})" ${isLocked ? 'disabled' : ''}>
+                        ${p.name}
+                    </button>
+                `;
+            }).join('');
+
+            // Add special challenges tab
+            const specialHtml = `
+                <button class="phase-tab ${currentPhase === 0 ? 'active' : ''}" onclick="selectPhase(0)">
+                    🔥 Bonus
+                </button>
+            `;
+
+            document.getElementById('phase-tabs').innerHTML = html + specialHtml;
+        }
+
+        function selectPhase(phaseId) {
+            currentPhase = phaseId;
+            renderPhaseTabs();
+            renderTasks();
+        }
+
+        function renderTasks() {
+            let phaseTasks;
+            if (currentPhase === 0) {
+                phaseTasks = tasks.filter(t => t.phase === 0);
+            } else {
+                phaseTasks = tasks.filter(t => t.phase === currentPhase);
+            }
+
+            // Group by category for phase 0
+            if (currentPhase === 0) {
+                const uncomfortable = phaseTasks.filter(t => t.category === 'uncomfortable');
+                const team = phaseTasks.filter(t => t.category === 'team');
+
+                let html = '';
+                if (uncomfortable.length) {
+                    html += renderTaskCategory('🔥 Uncomfortable (High Points)', uncomfortable);
+                }
+                if (team.length) {
+                    html += renderTaskCategory('🤝 Team Challenges', team);
+                }
+                document.getElementById('tasks-content').innerHTML = html;
+            } else {
+                const completed = phaseTasks.filter(t => userData.completedTasks?.includes(t.id)).length;
+                const html = renderTaskCategory(`Phase ${currentPhase} Tasks`, phaseTasks, `${completed}/${phaseTasks.length}`);
+                document.getElementById('tasks-content').innerHTML = html;
+            }
+        }
+
+        function renderTaskCategory(title, taskList, progress = '') {
+            const tasksHtml = taskList.map(task => {
+                const isCompleted = userData.completedTasks?.includes(task.id);
+                const hasProof = userData.proofs?.[task.id];
+                const displayPoints = Math.round(task.points * (userData.multiplier || 1));
+
+                return `
+                    <div class="task-item ${isCompleted ? 'completed' : ''} ${task.hard ? 'hard' : ''}" onclick="openTaskModal('${task.id}')">
                         <div class="task-checkbox">
                             <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </div>
@@ -1659,24 +1002,35 @@
                             <div class="task-title">${task.title}</div>
                             <div class="task-desc">${task.desc}</div>
                             <div class="task-meta">
-                                <span class="task-points-badge">+${task.points} pts</span>
+                                <span class="task-points-badge ${task.hard ? 'high' : ''}">+${displayPoints} pts</span>
+                                ${task.bonus ? `<span class="task-points-badge">${task.bonus}</span>` : ''}
                                 ${hasProof ? '<span class="task-proof-badge uploaded">✓ Proof</span>' : '<span class="task-proof-badge">Upload proof</span>'}
                             </div>
                         </div>
-                    `;
-                    section.appendChild(taskEl);
-                });
+                    </div>
+                `;
+            }).join('');
 
-                container.appendChild(section);
-            }
+            return `
+                <div class="task-category">
+                    <div class="category-header">
+                        <div class="category-title">${title}</div>
+                        ${progress ? `<div class="category-progress">${progress}</div>` : ''}
+                    </div>
+                    ${tasksHtml}
+                </div>
+            `;
         }
 
-        function openTaskModal(task) {
-            currentTaskId = task.id;
+        function openTaskModal(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            currentTaskId = taskId;
             selectedFile = null;
 
             document.getElementById('modal-task-title').textContent = task.title;
-            document.getElementById('modal-task-desc').textContent = 'Upload a screenshot or photo showing you completed this task to earn ' + task.points + ' points!';
+            document.getElementById('modal-task-desc').textContent = task.desc + ' Upload a screenshot to earn ' + Math.round(task.points * (userData.multiplier || 1)) + ' points!';
             document.getElementById('upload-preview').style.display = 'none';
             document.getElementById('upload-area').classList.remove('has-file');
             document.querySelector('#upload-area .upload-text').textContent = 'Tap to select image';
@@ -1688,21 +1042,16 @@
 
         function closeModal() {
             document.getElementById('upload-modal').classList.remove('show');
-            currentTaskId = null;
-            selectedFile = null;
         }
 
         function handleFileSelect(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             selectedFile = file;
-
             const reader = new FileReader();
             reader.onload = (e) => {
-                const preview = document.getElementById('upload-preview');
-                preview.src = e.target.result;
-                preview.style.display = 'block';
+                document.getElementById('upload-preview').src = e.target.result;
+                document.getElementById('upload-preview').style.display = 'block';
                 document.getElementById('upload-area').classList.add('has-file');
                 document.querySelector('#upload-area .upload-text').textContent = file.name;
                 document.getElementById('submit-proof-btn').disabled = false;
@@ -1711,37 +1060,31 @@
         }
 
         async function submitProof() {
-            if (!selectedFile || !currentTaskId || !isFirebaseConfigured) return;
-
+            if (!selectedFile || !currentTaskId) return;
             const btn = document.getElementById('submit-proof-btn');
             btn.disabled = true;
             btn.textContent = 'Uploading...';
 
             try {
-                // Upload file to storage
                 const fileRef = storage.ref(`proofs/${currentUser.uid}/${currentTaskId}_${Date.now()}`);
                 await fileRef.put(selectedFile);
                 const downloadUrl = await fileRef.getDownloadURL();
 
-                // Find task points
                 const task = tasks.find(t => t.id === currentTaskId);
-                const points = task?.points || 10;
+                const points = Math.round((task?.points || 10) * (userData.multiplier || 1));
 
-                // Update user document
                 const updates = {
                     [`proofs.${currentTaskId}`]: downloadUrl,
                     points: firebase.firestore.FieldValue.increment(points),
                     lastActive: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
-                // Add to completed tasks if not already there
                 if (!userData.completedTasks?.includes(currentTaskId)) {
                     updates.completedTasks = firebase.firestore.FieldValue.arrayUnion(currentTaskId);
                 }
 
                 await db.collection('users').doc(currentUser.uid).update(updates);
 
-                // Update local data
                 userData.proofs = userData.proofs || {};
                 userData.proofs[currentTaskId] = downloadUrl;
                 userData.points = (userData.points || 0) + points;
@@ -1756,111 +1099,78 @@
                 showToast(`+${points} points earned!`, 'success');
 
             } catch (error) {
-                console.error('Error uploading proof:', error);
-                showToast('Upload failed. Try again.', 'error');
+                console.error('Error:', error);
+                showToast('Upload failed', 'error');
                 btn.disabled = false;
                 btn.textContent = 'Submit';
             }
         }
 
-        // ============================================
         // LEADERBOARD
-        // ============================================
         async function loadLeaderboard() {
-            if (!isFirebaseConfigured) return;
-
-            try {
-                const snapshot = await db.collection('users')
-                    .orderBy('points', 'desc')
-                    .limit(20)
-                    .get();
-
-                const users = [];
-                snapshot.forEach(doc => {
-                    users.push({ id: doc.id, ...doc.data() });
-                });
-
-                renderLeaderboard(users);
-
-                // Update user's rank
-                const rank = users.findIndex(u => u.id === currentUser.uid) + 1;
-                document.getElementById('dash-rank').textContent = rank > 0 ? '#' + rank : '#--';
-
-            } catch (error) {
-                console.error('Error loading leaderboard:', error);
-            }
+            const snapshot = await db.collection('users').orderBy('points', 'desc').limit(20).get();
+            const users = [];
+            snapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+            renderLeaderboard(users);
+            const rank = users.findIndex(u => u.id === currentUser.uid) + 1;
+            document.getElementById('dash-rank').textContent = rank > 0 ? '#' + rank : '--';
         }
 
         function renderLeaderboard(users) {
-            // Render podium (top 3)
             const podium = document.getElementById('podium');
             const top3 = users.slice(0, 3);
-
-            // Reorder for podium display: 2nd, 1st, 3rd
-            const podiumOrder = [top3[1], top3[0], top3[2]].filter(Boolean);
+            const order = [top3[1], top3[0], top3[2]].filter(Boolean);
             const medals = ['🥈', '🥇', '🥉'];
 
-            podium.innerHTML = podiumOrder.map((user, i) => {
-                if (!user) return '';
+            podium.innerHTML = order.map((user, i) => {
                 const initial = (user.name || 'U')[0].toUpperCase();
                 return `
                     <div class="podium-place">
-                        <div class="podium-avatar">
-                            ${initial}
-                            <span class="podium-medal">${medals[i]}</span>
-                        </div>
+                        <div class="podium-avatar">${initial}<span class="podium-medal">${medals[i]}</span></div>
                         <div class="podium-name">${user.name || 'Runner'}</div>
-                        <div class="podium-points">${user.points} pts</div>
+                        <div class="podium-points">${Math.round(user.points)} pts</div>
                         <div class="podium-bar"></div>
                     </div>
                 `;
             }).join('');
 
-            // Render list (4th onwards)
             const list = document.getElementById('leaderboard-list');
             list.innerHTML = users.slice(3).map((user, i) => {
                 const initial = (user.name || 'U')[0].toUpperCase();
-                const isCurrentUser = user.id === currentUser?.uid;
+                const isMe = user.id === currentUser?.uid;
                 return `
-                    <div class="leaderboard-item ${isCurrentUser ? 'current-user' : ''}">
+                    <div class="leaderboard-item ${isMe ? 'current-user' : ''}">
                         <div class="leaderboard-rank">${i + 4}</div>
                         <div class="leaderboard-avatar">${initial}</div>
                         <div class="leaderboard-info">
-                            <div class="leaderboard-name">${user.name || 'Runner'}${isCurrentUser ? ' (You)' : ''}</div>
+                            <div class="leaderboard-name">${user.name || 'Runner'}${isMe ? ' (You)' : ''}</div>
                             <div class="leaderboard-streak">${user.streak || 0} day streak</div>
                         </div>
-                        <div class="leaderboard-points">${user.points}</div>
+                        <div class="leaderboard-points">${Math.round(user.points)}</div>
                     </div>
                 `;
             }).join('');
         }
 
-        // ============================================
-        // NAVIGATION
-        // ============================================
+        // NAV
         function showView(viewName) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
             document.getElementById(viewName + '-view').classList.add('active');
             event?.target?.closest('.nav-item')?.classList.add('active');
-
-            // Refresh data when switching to certain views
             if (viewName === 'leaderboard') loadLeaderboard();
+            if (viewName === 'tasks') { renderPhaseTabs(); renderTasks(); }
         }
 
-        // ============================================
-        // UTILITIES
-        // ============================================
-        function showToast(message, type = '') {
+        function showToast(msg, type = '') {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.textContent = msg;
             toast.className = 'toast show ' + type;
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         function shareProfile() {
-            const text = `I'm at ${userData?.points || 0} points in the Team Friendship Fundraising Challenge! Join me!`;
+            const text = `I have ${Math.round(userData?.points || 0)} points in the TF Jacksonville Challenge!`;
             if (navigator.share) {
                 navigator.share({ text, url: window.location.href });
             } else {
@@ -1871,4 +1181,3 @@
     </script>
 </body>
 </html>
-<!-- build Tue Jan 13 11:02:29 EST 2026 -->
