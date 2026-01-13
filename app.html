@@ -1434,6 +1434,13 @@
             btn.textContent = 'Signing in...';
             hideAuthError();
 
+            // Fallback reload after 3 seconds
+            setTimeout(() => {
+                if (auth.currentUser) {
+                    window.location.reload();
+                }
+            }, 3000);
+
             // Sign in then reload
             auth.signInWithEmailAndPassword(email, password)
                 .then(() => {
@@ -1459,12 +1466,19 @@
             btn.textContent = 'Creating account...';
             hideAuthError();
 
+            // Fallback reload after 3 seconds in case promises don't resolve
+            setTimeout(() => {
+                if (auth.currentUser) {
+                    window.location.reload();
+                }
+            }, 3000);
+
             // Create auth account then reload
             auth.createUserWithEmailAndPassword(email, password)
                 .then(cred => {
                     cred.user.updateProfile({ displayName: name }).then(() => {
                         window.location.reload();
-                    });
+                    }).catch(() => window.location.reload());
                 })
                 .catch(error => {
                     console.error('Signup error:', error);
