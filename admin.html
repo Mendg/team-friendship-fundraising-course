@@ -831,6 +831,7 @@
                         </td>
                         <td>
                             <button class="view-btn" onclick="viewUser('${user.id}')">View</button>
+                            <button class="view-btn" style="background: rgba(255,100,100,0.2); color: #ff6b6b; margin-left: 5px;" onclick="deleteUser('${user.id}', '${(user.name || user.email || 'this user').replace(/'/g, "\\'")}')">Delete</button>
                         </td>
                     </tr>
                 `;
@@ -906,6 +907,12 @@
                 </div>
 
                 ${proofsHtml}
+
+                <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <button class="btn btn-danger" onclick="deleteUser('${user.id}', '${(user.name || user.email || 'this user').replace(/'/g, "\\'")}')">
+                        Delete This User
+                    </button>
+                </div>
             `;
 
             document.getElementById('user-modal').classList.add('show');
@@ -913,6 +920,23 @@
 
         function closeModal() {
             document.getElementById('user-modal').classList.remove('show');
+        }
+
+        // Delete user
+        async function deleteUser(userId, userName) {
+            if (!confirm(`Are you sure you want to delete ${userName}?\n\nThis will remove all their data, points, and proofs. This cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(userId).delete();
+                alert('User deleted successfully');
+                closeModal();
+                loadData(); // Refresh the list
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                alert('Error deleting user: ' + error.message);
+            }
         }
 
         // Export functions
