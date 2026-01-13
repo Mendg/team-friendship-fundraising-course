@@ -1434,8 +1434,11 @@
             btn.textContent = 'Signing in...';
             hideAuthError();
 
-            // onAuthStateChanged will handle the rest
+            // Sign in then reload
             auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.reload();
+                })
                 .catch(error => {
                     showAuthError(error.message);
                     btn.disabled = false;
@@ -1456,10 +1459,12 @@
             btn.textContent = 'Creating account...';
             hideAuthError();
 
-            // Create auth account - onAuthStateChanged will handle the rest
+            // Create auth account then reload
             auth.createUserWithEmailAndPassword(email, password)
                 .then(cred => {
-                    return cred.user.updateProfile({ displayName: name });
+                    cred.user.updateProfile({ displayName: name }).then(() => {
+                        window.location.reload();
+                    });
                 })
                 .catch(error => {
                     console.error('Signup error:', error);
