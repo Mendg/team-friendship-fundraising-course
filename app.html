@@ -960,13 +960,13 @@
 
                 return `
                     <button class="phase-tab ${currentPhase === p.id ? 'active' : ''} ${isLocked ? 'locked' : ''}"
-                            onclick="selectPhase(${p.id})" ${isLocked ? 'disabled' : ''}>
-                        ${p.name}
+                            onclick="selectPhase(${p.id})">
+                        ${isLocked ? '🔒 ' : ''}${p.name}
                     </button>
                 `;
             }).join('');
 
-            // Add special challenges tab
+            // Add special challenges tab (always available)
             const specialHtml = `
                 <button class="phase-tab ${currentPhase === 0 ? 'active' : ''}" onclick="selectPhase(0)">
                     🔥 Bonus
@@ -982,7 +982,34 @@
             renderTasks();
         }
 
+        function isPhaseUnlocked(phaseId) {
+            if (phaseId === 0) return true; // Bonus always available
+            const phase = phases.find(p => p.id === phaseId);
+            if (!phase) return false;
+            const today = new Date();
+            const start = new Date(phase.startDate);
+            return today >= start;
+        }
+
         function renderTasks() {
+            // Check if phase is locked
+            if (currentPhase !== 0 && !isPhaseUnlocked(currentPhase)) {
+                const phase = phases.find(p => p.id === currentPhase);
+                document.getElementById('tasks-content').innerHTML = `
+                    <div class="task-category">
+                        <div style="text-align:center; padding:40px 20px;">
+                            <div style="font-size:48px; margin-bottom:16px;">🔒</div>
+                            <div style="font-size:18px; font-weight:700; margin-bottom:8px;">Coming Soon!</div>
+                            <div style="color:#888; font-size:14px;">This phase unlocks on ${phase?.dates || 'soon'}</div>
+                            <div style="margin-top:20px; color:#4ecdc4; font-size:13px;">
+                                Try the <strong>🔥 Bonus</strong> challenges while you wait!
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
             let phaseTasks;
             if (currentPhase === 0) {
                 phaseTasks = tasks.filter(t => t.phase === 0);
@@ -1005,7 +1032,18 @@
                 document.getElementById('tasks-content').innerHTML = html;
             } else {
                 const completed = phaseTasks.filter(t => userData.completedTasks?.includes(t.id)).length;
-                const html = renderTaskCategory(`Phase ${currentPhase} Tasks`, phaseTasks, `${completed}/${phaseTasks.length}`);
+                let html = renderTaskCategory(`Phase ${currentPhase} Tasks`, phaseTasks, `${completed}/${phaseTasks.length}`);
+
+                // Add message if all tasks completed
+                if (completed === phaseTasks.length) {
+                    html += `
+                        <div style="text-align:center; padding:20px; background:rgba(78,205,196,0.1); border-radius:16px; margin-top:16px;">
+                            <div style="font-size:24px; margin-bottom:8px;">🎉</div>
+                            <div style="font-weight:600; color:#4ecdc4;">Phase Complete!</div>
+                            <div style="color:#888; font-size:13px; margin-top:4px;">Check out the 🔥 Bonus challenges for more points!</div>
+                        </div>
+                    `;
+                }
                 document.getElementById('tasks-content').innerHTML = html;
             }
         }
