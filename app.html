@@ -1443,10 +1443,14 @@
             hideAuthError();
 
             try {
+                btn.textContent = 'Creating account...';
                 const cred = await auth.createUserWithEmailAndPassword(email, password);
+
+                btn.textContent = 'Setting up profile...';
                 await cred.user.updateProfile({ displayName: name });
 
                 // Create user document
+                btn.textContent = 'Saving data...';
                 await db.collection('users').doc(cred.user.uid).set({
                     name: name,
                     email: email,
@@ -1459,10 +1463,12 @@
                 });
 
                 // Redirect to app
+                btn.textContent = 'Loading...';
                 currentUser = cred.user;
                 await loadUserData();
             } catch (error) {
-                showAuthError(error.message);
+                console.error('Signup error:', error);
+                showAuthError(error.message || 'Signup failed. Check console for details.');
                 btn.disabled = false;
                 btn.textContent = 'Create Account';
             }
