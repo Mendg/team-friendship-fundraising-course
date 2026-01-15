@@ -612,10 +612,10 @@
 
         // PHASES AND TASKS
         const phases = [
-            { id: 1, name: "Go Back to the Well", dates: "Jan 13-16", startDate: "2026-01-13", endDate: "2026-01-16" },
-            { id: 2, name: "Expand the Circle", dates: "Jan 17-18", startDate: "2026-01-17", endDate: "2026-01-18" },
-            { id: 3, name: "Final 72 Hours", dates: "Jan 19-21", startDate: "2026-01-19", endDate: "2026-01-21" },
-            { id: 4, name: "Event Week", dates: "Jan 22-30", startDate: "2026-01-22", endDate: "2026-01-30" }
+            { id: 1, name: "Re-Ask & Recruit", dates: "Start here" },
+            { id: 2, name: "Expand Your Circle", dates: "Level 2" },
+            { id: 3, name: "Final Push", dates: "Level 3" },
+            { id: 4, name: "Event & Gratitude", dates: "Level 4" }
         ];
 
         const tasks = [
@@ -948,25 +948,16 @@
 
         // TASKS
         function renderPhaseTabs() {
-            const today = new Date();
             const html = phases.map(p => {
-                const start = new Date(p.startDate);
-                const end = new Date(p.endDate);
-                end.setHours(23, 59, 59);
-                const isActive = today >= start && today <= end;
-                const isLocked = today < start;
-
-                if (isActive) currentPhase = p.id;
-
                 return `
-                    <button class="phase-tab ${currentPhase === p.id ? 'active' : ''} ${isLocked ? 'locked' : ''}"
+                    <button class="phase-tab ${currentPhase === p.id ? 'active' : ''}"
                             onclick="selectPhase(${p.id})">
-                        ${isLocked ? '🔒 ' : ''}${p.name}
+                        ${p.name}
                     </button>
                 `;
             }).join('');
 
-            // Add special challenges tab (always available)
+            // Add special challenges tab
             const specialHtml = `
                 <button class="phase-tab ${currentPhase === 0 ? 'active' : ''}" onclick="selectPhase(0)">
                     🔥 Bonus
@@ -982,34 +973,7 @@
             renderTasks();
         }
 
-        function isPhaseUnlocked(phaseId) {
-            if (phaseId === 0) return true; // Bonus always available
-            const phase = phases.find(p => p.id === phaseId);
-            if (!phase) return false;
-            const today = new Date();
-            const start = new Date(phase.startDate);
-            return today >= start;
-        }
-
         function renderTasks() {
-            // Check if phase is locked
-            if (currentPhase !== 0 && !isPhaseUnlocked(currentPhase)) {
-                const phase = phases.find(p => p.id === currentPhase);
-                document.getElementById('tasks-content').innerHTML = `
-                    <div class="task-category">
-                        <div style="text-align:center; padding:40px 20px;">
-                            <div style="font-size:48px; margin-bottom:16px;">🔒</div>
-                            <div style="font-size:18px; font-weight:700; margin-bottom:8px;">Coming Soon!</div>
-                            <div style="color:#888; font-size:14px;">This phase unlocks on ${phase?.dates || 'soon'}</div>
-                            <div style="margin-top:20px; color:#4ecdc4; font-size:13px;">
-                                Try the <strong>🔥 Bonus</strong> challenges while you wait!
-                            </div>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
             let phaseTasks;
             if (currentPhase === 0) {
                 phaseTasks = tasks.filter(t => t.phase === 0);
@@ -1031,16 +995,17 @@
                 }
                 document.getElementById('tasks-content').innerHTML = html;
             } else {
+                const phase = phases.find(p => p.id === currentPhase);
                 const completed = phaseTasks.filter(t => userData.completedTasks?.includes(t.id)).length;
-                let html = renderTaskCategory(`Phase ${currentPhase} Tasks`, phaseTasks, `${completed}/${phaseTasks.length}`);
+                let html = renderTaskCategory(phase?.name || `Phase ${currentPhase}`, phaseTasks, `${completed}/${phaseTasks.length}`);
 
                 // Add message if all tasks completed
-                if (completed === phaseTasks.length) {
+                if (completed === phaseTasks.length && phaseTasks.length > 0) {
                     html += `
                         <div style="text-align:center; padding:20px; background:rgba(78,205,196,0.1); border-radius:16px; margin-top:16px;">
                             <div style="font-size:24px; margin-bottom:8px;">🎉</div>
-                            <div style="font-weight:600; color:#4ecdc4;">Phase Complete!</div>
-                            <div style="color:#888; font-size:13px; margin-top:4px;">Check out the 🔥 Bonus challenges for more points!</div>
+                            <div style="font-weight:600; color:#4ecdc4;">All Done!</div>
+                            <div style="color:#888; font-size:13px; margin-top:4px;">Try the 🔥 Bonus challenges or another category!</div>
                         </div>
                     `;
                 }
